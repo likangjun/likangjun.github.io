@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-09-30T05:26:20.000Z</updated>
+  <updated>2016-10-13T15:31:46.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/06/13/hello-world/"/>
     <id>http://yoursite.com/2016/06/13/hello-world/</id>
     <published>2016-06-13T02:34:00.000Z</published>
-    <updated>2016-09-30T05:26:20.000Z</updated>
+    <updated>2016-10-13T15:31:46.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="Welcome-to-Likangjun"><a href="#Welcome-to-Likangjun" class="headerlink" title="Welcome to Likangjun"></a>Welcome to <a href="http://likangjun.com/" target="_blank" rel="external">Likangjun</a></h3><p>又是一个Hello World</p>
 <p>上次写博客的时候还是WordPress</p>
