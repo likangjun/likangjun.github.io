@@ -2,7 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/06/13/hello-world/</loc>
+    <loc>http://likangjun.com/2016/10/14/Hexo%E5%BC%80%E5%90%AF%E5%A4%9A%E8%AF%B4%E8%AF%84%E8%AE%BA/</loc>
+    
+    <lastmod>2016-10-14T01:35:50.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://likangjun.com/2016/06/13/hello-world/</loc>
     
     <lastmod>2016-10-13T15:31:46.000Z</lastmod>
     

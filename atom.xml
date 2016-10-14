@@ -4,9 +4,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2016-10-13T15:31:46.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://likangjun.com/"/>
+  <updated>2016-10-14T01:35:50.000Z</updated>
+  <id>http://likangjun.com/</id>
   
   <author>
     <name>Likangjun</name>
@@ -16,13 +16,39 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Hexo开启多说评论</title>
+    <link href="http://likangjun.com/2016/10/14/Hexo%E5%BC%80%E5%90%AF%E5%A4%9A%E8%AF%B4%E8%AF%84%E8%AE%BA/"/>
+    <id>http://likangjun.com/2016/10/14/Hexo开启多说评论/</id>
+    <published>2016-10-14T01:11:02.000Z</published>
+    <updated>2016-10-14T01:35:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Hexo静态博客中开启多说评论"><a href="#Hexo静态博客中开启多说评论" class="headerlink" title="Hexo静态博客中开启多说评论"></a>Hexo静态博客中开启多说评论</h2><p>首先要在<a href="http://duoshuo.com/" target="_blank" rel="external">多说</a>中申请一个账号，会得到一个多说的二级域名，我的就是<a href="http://likangjun.duoshuo.com" target="_blank" rel="external">http://likangjun.duoshuo.com</a></p>
+<p>然后在hexo根部目录下<code>_config.yml</code>里配置自己的多说账号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Comments</span></span><br><span class="line">duoshuo_shortname: liakngjun</span><br></pre></td></tr></table></figure></p>
+<p>记得: 后面有一个空格</p>
+<p>最后在主题文件<code>themes\landscape\layout\_partial\article.ejs</code><br>找到<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (!index &amp;&amp; post.comments &amp;&amp; config.disqus_shortname)&#123; %&gt;</span><br><span class="line"> &lt;section id="comments"&gt;</span><br><span class="line">   &lt;div id="disqus_thread"&gt;</span><br><span class="line">     &lt;noscript&gt;Please enable JavaScript to view the &lt;a href="//disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</span><br><span class="line">   &lt;/div&gt;</span><br><span class="line"> &lt;/section&gt;</span><br><span class="line"> &lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>改为<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (!index &amp;&amp; post.comments &amp;&amp; config.duoshuo_shortname)&#123; %&gt;</span><br><span class="line">    &lt;section id="comments"&gt;</span><br><span class="line">        &lt;!-- 多说评论框 start --&gt;</span><br><span class="line">        &lt;div class="ds-thread" data-thread-key="&lt;%= post.layout %&gt;-&lt;%= post.slug %&gt;" data-title="&lt;%= post.title %&gt;" data-url="&lt;%= page.permalink %&gt;"&gt;&lt;/div&gt;</span><br><span class="line">        &lt;!-- 多说评论框 end --&gt;</span><br><span class="line">        &lt;!-- 多说公共JS代码 start (一个网页只需插入一次) --&gt;</span><br><span class="line">        &lt;script type="text/javascript"&gt;</span><br><span class="line">            var duoshuoQuery = &#123;short_name:'&lt;%= config.duoshuo_shortname %&gt;'&#125;;</span><br><span class="line">            (function() &#123;</span><br><span class="line">                var ds = document.createElement('script');</span><br><span class="line">                ds.type = 'text/javascript';ds.async = true;</span><br><span class="line">                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';</span><br><span class="line">                ds.charset = 'UTF-8';</span><br><span class="line">                (document.getElementsByTagName('head')[0]</span><br><span class="line">                || document.getElementsByTagName('body')[0]).appendChild(ds);</span><br><span class="line">            &#125;)();</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">        &lt;!-- 多说公共JS代码 end --&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>也可以看到，我们可以写博客的时候通过comments来控制这篇是否开启评论</p>
+]]></content>
+    
+    <summary type="html">
+    
+      Hexo静态博客中开启多说评论
+    
+    </summary>
+    
+    
+      <category term="hexo" scheme="http://likangjun.com/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2016/06/13/hello-world/"/>
-    <id>http://yoursite.com/2016/06/13/hello-world/</id>
+    <link href="http://likangjun.com/2016/06/13/hello-world/"/>
+    <id>http://likangjun.com/2016/06/13/hello-world/</id>
     <published>2016-06-13T02:34:00.000Z</published>
     <updated>2016-10-13T15:31:46.000Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="Welcome-to-Likangjun"><a href="#Welcome-to-Likangjun" class="headerlink" title="Welcome to Likangjun"></a>Welcome to <a href="http://likangjun.com/" target="_blank" rel="external">Likangjun</a></h3><p>又是一个Hello World</p>
+    <content type="html"><![CDATA[<h3 id="Welcome-to-Likangjun"><a href="#Welcome-to-Likangjun" class="headerlink" title="Welcome to Likangjun"></a>Welcome to <a href="http://likangjun.com/">Likangjun</a></h3><p>又是一个Hello World</p>
 <p>上次写博客的时候还是WordPress</p>
 <p>现在在<a href="http://blog.jayxhj.com/" target="_blank" rel="external">jayxhj</a>的推荐下用Hexo + github 搭建了这个静态博客</p>
 <p>后续会做一些博客迁移</p>
