@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likangjun.com/"/>
-  <updated>2016-10-14T01:35:50.000Z</updated>
+  <updated>2016-10-26T12:08:56.000Z</updated>
   <id>http://likangjun.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>php+ajax 简易即时聊天室</title>
+    <link href="http://likangjun.com/2016/10/26/php-ajax-%E7%AE%80%E6%98%93%E5%8D%B3%E6%97%B6%E8%81%8A%E5%A4%A9%E5%AE%A4/"/>
+    <id>http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/</id>
+    <published>2016-10-26T11:53:58.000Z</published>
+    <updated>2016-10-26T12:08:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="php-ajax-简易即时聊天室"><a href="#php-ajax-简易即时聊天室" class="headerlink" title="php+ajax 简易即时聊天室"></a>php+ajax 简易即时聊天室</h2><p>github的地址是：<a href="https://github.com/likangjun/chat" target="_blank" rel="external">https://github.com/likangjun/chat</a><br>demo: <a href="http://demo.likangjun.com/chat" target="_blank" rel="external">http://demo.likangjun.com/chat</a></p>
+<p>这里是用<code>MySQL</code>和<code>txt</code>文件来保存的聊天记录，然后用js去不断的请求聊天内容展现到页面上而达到了即时的效果，这里也可以用<code>redis</code>这种<code>nosql</code>。之前还在网上看到过一个<code>PHP+Swoole</code>扩展的即时聊天项目，地址是<a href="https://github.com/matyhtf/php-webim" target="_blank" rel="external">https://github.com/matyhtf/php-webim</a> ，也值得去学习学习</p>
+<p>先看下文件结构<br><img src="http://p1.bpimg.com/567571/25652de43fea77e3.png" alt=""></p>
+<p><code>log</code>是聊天记录存放目录</p>
+<p><code>conn</code>是用来链接数据库的</p>
+<p><code>index</code>，<code>login</code>，<code>logout</code>是登录，退出这些页面</p>
+<p><code>ajax</code>是用于接受信息并储存在数据库或文件</p>
+<p>最主要的还是<code>chat.php</code> 和<code>get.php</code></p>
+<p><code>chat</code>是聊天室页面，用<code>ajax</code>不断的请求<code>get.php</code>获得聊天内容并展示<br><code>get.php</code>里把第一次请求时的聊天条数和第一次以后的聊天条数作对比，然后用死循环去不断查询数据库或者读本地文件获取聊天信息返回给<code>chat.php</code>，从而形成了即时聊天</p>
+<p>这个只是一个简单粗暴的方法，性能和体验上还达不到要求，后续也将会去学习研究更好的解决方案</p>
+]]></content>
+    
+    <summary type="html">
+    
+      php+ajax 简易即时聊天室
+    
+    </summary>
+    
+    
+      <category term="ajax" scheme="http://likangjun.com/tags/ajax/"/>
+    
+      <category term="php" scheme="http://likangjun.com/tags/php/"/>
+    
+      <category term="即时聊天" scheme="http://likangjun.com/tags/%E5%8D%B3%E6%97%B6%E8%81%8A%E5%A4%A9/"/>
+    
+  </entry>
   
   <entry>
     <title>Hexo开启多说评论</title>

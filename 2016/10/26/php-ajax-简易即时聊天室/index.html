@@ -3,34 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | Likangjun</title>
+  <title>php+ajax 简易即时聊天室 | Likangjun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="google-site-verification" content="06XSvFZPQvqk10xzDhYBgeDo01CUCCASMBEfjflgsc4">
-  <meta name="description" content="Welcome to Likangjun又是一个Hello World
-上次写博客的时候还是WordPress
-现在在jayxhj的推荐下用Hexo + github 搭建了这个静态博客
-后续会做一些博客迁移
-并将继续与大家交流，并分享一些有趣的技术
-Go">
+  <meta name="description" content="php+ajax 简易即时聊天室">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://likangjun.com/2016/06/13/hello-world/index.html">
+<meta property="og:title" content="php+ajax 简易即时聊天室">
+<meta property="og:url" content="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/index.html">
 <meta property="og:site_name" content="Likangjun">
-<meta property="og:description" content="Welcome to Likangjun又是一个Hello World
-上次写博客的时候还是WordPress
-现在在jayxhj的推荐下用Hexo + github 搭建了这个静态博客
-后续会做一些博客迁移
-并将继续与大家交流，并分享一些有趣的技术
-Go">
-<meta property="og:updated_time" content="2016-10-13T15:31:46.000Z">
+<meta property="og:description" content="php+ajax 简易即时聊天室">
+<meta property="og:image" content="http://p1.bpimg.com/567571/25652de43fea77e3.png">
+<meta property="og:updated_time" content="2016-10-26T12:08:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Likangjun又是一个Hello World
-上次写博客的时候还是WordPress
-现在在jayxhj的推荐下用Hexo + github 搭建了这个静态博客
-后续会做一些博客迁移
-并将继续与大家交流，并分享一些有趣的技术
-Go">
+<meta name="twitter:title" content="php+ajax 简易即时聊天室">
+<meta name="twitter:description" content="php+ajax 简易即时聊天室">
+<meta name="twitter:image" content="http://p1.bpimg.com/567571/25652de43fea77e3.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -79,10 +66,10 @@ Go">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-php-ajax-简易即时聊天室" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/06/13/hello-world/" class="article-date">
-  <time datetime="2016-06-13T02:34:00.000Z" itemprop="datePublished">2016-06-13</time>
+    <a href="/2016/10/26/php-ajax-简易即时聊天室/" class="article-date">
+  <time datetime="2016-10-26T11:53:58.000Z" itemprop="datePublished">2016-10-26</time>
 </a>
     
   </div>
@@ -93,7 +80,7 @@ Go">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      php+ajax 简易即时聊天室
     </h1>
   
 
@@ -101,33 +88,36 @@ Go">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="Welcome-to-Likangjun"><a href="#Welcome-to-Likangjun" class="headerlink" title="Welcome to Likangjun"></a>Welcome to <a href="http://likangjun.com/">Likangjun</a></h3><p>又是一个Hello World</p>
-<p>上次写博客的时候还是WordPress</p>
-<p>现在在<a href="http://blog.jayxhj.com/" target="_blank" rel="external">jayxhj</a>的推荐下用Hexo + github 搭建了这个静态博客</p>
-<p>后续会做一些博客迁移</p>
-<p>并将继续与大家交流，并分享一些有趣的技术</p>
-<h3 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h3>
+        <h2 id="php-ajax-简易即时聊天室"><a href="#php-ajax-简易即时聊天室" class="headerlink" title="php+ajax 简易即时聊天室"></a>php+ajax 简易即时聊天室</h2><p>github的地址是：<a href="https://github.com/likangjun/chat" target="_blank" rel="external">https://github.com/likangjun/chat</a><br>demo: <a href="http://demo.likangjun.com/chat" target="_blank" rel="external">http://demo.likangjun.com/chat</a></p>
+<p>这里是用<code>MySQL</code>和<code>txt</code>文件来保存的聊天记录，然后用js去不断的请求聊天内容展现到页面上而达到了即时的效果，这里也可以用<code>redis</code>这种<code>nosql</code>。之前还在网上看到过一个<code>PHP+Swoole</code>扩展的即时聊天项目，地址是<a href="https://github.com/matyhtf/php-webim" target="_blank" rel="external">https://github.com/matyhtf/php-webim</a> ，也值得去学习学习</p>
+<p>先看下文件结构<br><img src="http://p1.bpimg.com/567571/25652de43fea77e3.png" alt=""></p>
+<p><code>log</code>是聊天记录存放目录</p>
+<p><code>conn</code>是用来链接数据库的</p>
+<p><code>index</code>，<code>login</code>，<code>logout</code>是登录，退出这些页面</p>
+<p><code>ajax</code>是用于接受信息并储存在数据库或文件</p>
+<p>最主要的还是<code>chat.php</code> 和<code>get.php</code></p>
+<p><code>chat</code>是聊天室页面，用<code>ajax</code>不断的请求<code>get.php</code>获得聊天内容并展示<br><code>get.php</code>里把第一次请求时的聊天条数和第一次以后的聊天条数作对比，然后用死循环去不断查询数据库或者读本地文件获取聊天信息返回给<code>chat.php</code>，从而形成了即时聊天</p>
+<p>这个只是一个简单粗暴的方法，性能和体验上还达不到要求，后续也将会去学习研究更好的解决方案</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/06/13/hello-world/" data-id="ciuqwjjsq0003a77zb315k4pk" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="ciuqwjjsk0001a77z62gj850h" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/10/14/Hexo开启多说评论/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Hexo开启多说评论
-        
-      </div>
-    </a>
   
+    <a href="/2016/10/14/Hexo开启多说评论/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo开启多说评论</div>
+    </a>
   
 </nav>
 
@@ -136,7 +126,7 @@ Go">
 
     <section id="comments">
         <!-- 多说评论框 start -->
-        <div class="ds-thread" data-thread-key="post-hello-world" data-title="Hello World" data-url="http://likangjun.com/2016/06/13/hello-world/"></div>
+        <div class="ds-thread" data-thread-key="post-php-ajax-简易即时聊天室" data-title="php+ajax 简易即时聊天室" data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/"></div>
         <!-- 多说评论框 end -->
         <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
         <script type="text/javascript">
