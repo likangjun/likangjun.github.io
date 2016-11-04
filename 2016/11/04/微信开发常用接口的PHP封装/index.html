@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Likangjun</title>
+  <title>微信开发常用接口的PHP封装 | Likangjun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="google-site-verification" content="06XSvFZPQvqk10xzDhYBgeDo01CUCCASMBEfjflgsc4">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Likangjun">
-<meta property="og:url" content="http://likangjun.com/index.html">
+  <meta name="description" content="微信开发常用接口的PHP封装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信开发常用接口的PHP封装">
+<meta property="og:url" content="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/index.html">
 <meta property="og:site_name" content="Likangjun">
-<meta property="og:description">
+<meta property="og:description" content="微信开发常用接口的PHP封装">
+<meta property="og:updated_time" content="2016-11-04T07:18:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Likangjun">
-<meta name="twitter:description">
+<meta name="twitter:title" content="微信开发常用接口的PHP封装">
+<meta name="twitter:description" content="微信开发常用接口的PHP封装">
   
   
     <link rel="icon" href="/favicon.png">
@@ -63,9 +64,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-微信开发常用接口的PHP封装" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-微信开发常用接口的PHP封装" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/11/04/微信开发常用接口的PHP封装/" class="article-date">
   <time datetime="2016-11-04T06:14:29.000Z" itemprop="datePublished">2016-11-04</time>
@@ -78,8 +77,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/04/微信开发常用接口的PHP封装/">微信开发常用接口的PHP封装</a>
+    <h1 class="article-title" itemprop="name">
+      微信开发常用接口的PHP封装
     </h1>
   
 
@@ -216,191 +215,39 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-php合成图片加水印" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/27/php合成图片加水印/" class="article-date">
-  <time datetime="2016-10-27T14:40:14.000Z" itemprop="datePublished">2016-10-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/php合成图片加水印/">php合成图片加水印</a>
-    </h1>
+    <a href="/2016/10/27/php合成图片加水印/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">php合成图片加水印</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>分享自己写的一个php的图像处理的一些方法，包括图片的缩小和放大，两张图的合成，和图片写入文字</p>
-<p>这里实现的是一个底图和一个二维码合成并加上水印的功能，其中二维码可以自定义缩放比例</p>
-<p>先是生成一个底图画布，然后生成相关大小的二维码图片的临时文件，然后将两张图合成，最后在画布上写入文件</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="comment">/**</span><br><span class="line"> * author lkj</span><br><span class="line"> * date 2015/12/26</span><br><span class="line"> * <span class="doctag">@param</span> string $img 底图路径</span><br><span class="line"> * <span class="doctag">@param</span> string $qrcode 二维码路径</span><br><span class="line"> * <span class="doctag">@param</span> int $x 二维码左边距 true水平居中</span><br><span class="line"> * <span class="doctag">@param</span> int $y 二维码上边距 true垂直居中</span><br><span class="line"> * <span class="doctag">@param</span> int $percent 二维码按比例缩放</span><br><span class="line"> * <span class="doctag">@param</span> bool $save false直接输出true保存文件</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">bool imagecopy ( resource $dst_im , resource $src_im , int $dst_x , int $dst_y , int $src_x , int $src_y , int $src_w , int $src_h )</span><br><span class="line">将 src_im 图像中坐标从 src_x，src_y 开始，宽度为 src_w，高度为 src_h 的一部分拷贝到 dst_im 图像中坐标为 dst_x 和 dst_y 的位置上。</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergerImg</span><span class="params">($img, $qrcode, $x, $y, $percent, $save = false)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/***底图处理****/</span></span><br><span class="line">    <span class="keyword">list</span>($max_width, $max_height) = getimagesize($img);</span><br><span class="line">    $dests = imagecreatetruecolor($max_width, $max_height);</span><br><span class="line">    $dst_im = imagecreatefromjpeg($img);</span><br><span class="line">    imagecopy($dests, $dst_im, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, $max_width, $max_height);</span><br><span class="line">    imagedestroy($dst_im);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*********二维码大小调整并保存********** */</span></span><br><span class="line">    <span class="comment">// Get new sizes</span></span><br><span class="line">    <span class="keyword">list</span>($width, $height) = getimagesize($qrcode);</span><br><span class="line"></span><br><span class="line">    $newwidth = $width * $percent;</span><br><span class="line">    $newheight = $height * $percent;</span><br><span class="line">    <span class="comment">// Load</span></span><br><span class="line">    $thumb = imagecreatetruecolor($newwidth, $newheight);</span><br><span class="line">    $source = imagecreatefrompng($qrcode);</span><br><span class="line">    <span class="comment">// Resize</span></span><br><span class="line">    imagecopyresized($thumb, $source, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, $newwidth, $newheight, $width, $height);</span><br><span class="line">    $name = <span class="string">'tmep.png'</span>;<span class="comment">//缩放二维码存放临时文件</span></span><br><span class="line">    <span class="comment">// Save</span></span><br><span class="line">    imagepng($thumb, $name);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*******图片合成*********/</span></span><br><span class="line">    $src_im = imagecreatefrompng($name);</span><br><span class="line">    $src_info = getimagesize($name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ($x === <span class="keyword">true</span>) &#123;<span class="comment">//水平居中</span></span><br><span class="line">        $padding_left = ($max_width - $src_info[<span class="number">0</span>]) / <span class="number">2</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $padding_left = $x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ($y === <span class="keyword">true</span>) &#123;<span class="comment">//垂直居中</span></span><br><span class="line">        $padding_top = ($max_height - $src_info[<span class="number">1</span>]) / <span class="number">2</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $padding_top = $y;</span><br><span class="line">    &#125;</span><br><span class="line">    imagecopy($dests, $src_im, $padding_left, $padding_top, <span class="number">0</span>, <span class="number">0</span>, $src_info[<span class="number">0</span>], $src_info[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*******写入文字******/</span></span><br><span class="line">    $color = imagecolorallocate($dests, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>); <span class="comment">//字体颜色</span></span><br><span class="line">    $fontfile = <span class="string">"font.ttf"</span>; <span class="comment">//字体文件</span></span><br><span class="line">    $string = <span class="string">"@likangjun.com"</span>;</span><br><span class="line">    imagettftext($dests, <span class="number">18</span>, <span class="number">0</span>, <span class="number">230</span>, <span class="number">760</span>, $color, $fontfile, $string);</span><br><span class="line">    unlink($name);<span class="comment">//删除临时文件</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*******保存文件********/</span></span><br><span class="line">    <span class="keyword">if</span> ($save) &#123;</span><br><span class="line">        $savepath = <span class="string">"qrcode.png"</span>;</span><br><span class="line">        $result = imagepng($dests, $savepath);</span><br><span class="line">        imagedestroy($dests);</span><br><span class="line">        <span class="keyword">echo</span> $result ? <span class="string">'success'</span> : <span class="string">'fail'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*******输出到浏览器********/</span></span><br><span class="line">    header(<span class="string">'Content-Type: image/jpeg'</span>);</span><br><span class="line">    imagepng($dests);</span><br><span class="line">    imagedestroy($dests);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>相关的小项目可以看githu和demo更加的直观<br>demo用get自定义二维码内容和水印内容，不妨点击去试试~<br>github的地址是：<a href="https://github.com/likangjun/image" target="_blank" rel="external">https://github.com/likangjun/image</a><br>demo: <a href="http://demo.likangjun.com/image/index.php?qrcode=http://likangjun.com&amp;water=likangjun.com" target="_blank" rel="external">http://demo.likangjun.com/image/index.php?qrcode=http://likangjun.com&amp;water=likangjun.com</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="civ3g9w9900060l7zoyno942x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片合成/">图片合成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/水印/">水印</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
+    <section id="comments">
+        <!-- 多说评论框 start -->
+        <div class="ds-thread" data-thread-key="post-微信开发常用接口的PHP封装" data-title="微信开发常用接口的PHP封装" data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/"></div>
+        <!-- 多说评论框 end -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <script type="text/javascript">
+            var duoshuoQuery = {short_name:'likangjun'};
+            (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+        </script>
+        <!-- 多说公共JS代码 end -->
+    </section>
 
-
-  
-    <article id="post-php-ajax-简易即时聊天室" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/26/php-ajax-简易即时聊天室/" class="article-date">
-  <time datetime="2016-10-26T11:53:58.000Z" itemprop="datePublished">2016-10-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/26/php-ajax-简易即时聊天室/">php+ajax 简易即时聊天室</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>github的地址是：<a href="https://github.com/likangjun/chat" target="_blank" rel="external">https://github.com/likangjun/chat</a><br>demo: <a href="http://demo.likangjun.com/chat" target="_blank" rel="external">http://demo.likangjun.com/chat</a></p>
-<p>这里是用<code>MySQL</code>和<code>txt</code>文件来保存的聊天记录，然后用js去不断的请求聊天内容展现到页面上而达到了即时的效果，这里也可以用<code>redis</code>这种<code>nosql</code>。之前还在网上看到过一个<code>PHP+Swoole</code>扩展的即时聊天项目，地址是<a href="https://github.com/matyhtf/php-webim" target="_blank" rel="external">https://github.com/matyhtf/php-webim</a> ，也值得去学习学习</p>
-<p>先看下文件结构<br><img src="http://p1.bpimg.com/567571/25652de43fea77e3.png" alt=""></p>
-<p><code>log</code>是聊天记录存放目录</p>
-<p><code>conn</code>是用来链接数据库的</p>
-<p><code>index</code>，<code>login</code>，<code>logout</code>是登录，退出这些页面</p>
-<p><code>ajax</code>是用于接受信息并储存在数据库或文件</p>
-<p>最主要的还是<code>chat.php</code> 和<code>get.php</code></p>
-<p><code>chat</code>是聊天室页面，用<code>ajax</code>不断的请求<code>get.php</code>获得聊天内容并展示<br><code>get.php</code>里把第一次请求时的聊天条数和第一次以后的聊天条数作对比，然后用死循环去不断查询数据库或者读本地文件获取聊天信息返回给<code>chat.php</code>，从而形成了即时聊天</p>
-<p>这个只是一个简单粗暴的方法，性能和体验上还达不到要求，后续也将会去学习研究更好的解决方案</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="civ3g9w8t00000l7z2vcyv6az" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Hexo开启多说评论" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/14/Hexo开启多说评论/" class="article-date">
-  <time datetime="2016-10-14T01:11:02.000Z" itemprop="datePublished">2016-10-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/14/Hexo开启多说评论/">Hexo开启多说评论</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先要在<a href="http://duoshuo.com/" target="_blank" rel="external">多说</a>中申请一个账号，会得到一个多说的二级域名，我的就是<a href="http://likangjun.duoshuo.com" target="_blank" rel="external">http://likangjun.duoshuo.com</a></p>
-<p>然后在hexo根部目录下<code>_config.yml</code>里配置自己的多说账号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Comments</span></span><br><span class="line">duoshuo_shortname: liakngjun</span><br></pre></td></tr></table></figure></p>
-<p>记得: 后面有一个空格</p>
-<p>最后在主题文件<code>themes\landscape\layout\_partial\article.ejs</code><br>找到<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (!index &amp;&amp; post.comments &amp;&amp; config.disqus_shortname)&#123; %&gt;</span><br><span class="line"> &lt;section id="comments"&gt;</span><br><span class="line">   &lt;div id="disqus_thread"&gt;</span><br><span class="line">     &lt;noscript&gt;Please enable JavaScript to view the &lt;a href="//disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</span><br><span class="line">   &lt;/div&gt;</span><br><span class="line"> &lt;/section&gt;</span><br><span class="line"> &lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
-<p>改为<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (!index &amp;&amp; post.comments &amp;&amp; config.duoshuo_shortname)&#123; %&gt;</span><br><span class="line">    &lt;section id="comments"&gt;</span><br><span class="line">        &lt;!-- 多说评论框 start --&gt;</span><br><span class="line">        &lt;div class="ds-thread" data-thread-key="&lt;%= post.layout %&gt;-&lt;%= post.slug %&gt;" data-title="&lt;%= post.title %&gt;" data-url="&lt;%= page.permalink %&gt;"&gt;&lt;/div&gt;</span><br><span class="line">        &lt;!-- 多说评论框 end --&gt;</span><br><span class="line">        &lt;!-- 多说公共JS代码 start (一个网页只需插入一次) --&gt;</span><br><span class="line">        &lt;script type="text/javascript"&gt;</span><br><span class="line">            var duoshuoQuery = &#123;short_name:'&lt;%= config.duoshuo_shortname %&gt;'&#125;;</span><br><span class="line">            (function() &#123;</span><br><span class="line">                var ds = document.createElement('script');</span><br><span class="line">                ds.type = 'text/javascript';ds.async = true;</span><br><span class="line">                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';</span><br><span class="line">                ds.charset = 'UTF-8';</span><br><span class="line">                (document.getElementsByTagName('head')[0]</span><br><span class="line">                || document.getElementsByTagName('body')[0]).appendChild(ds);</span><br><span class="line">            &#125;)();</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">        &lt;!-- 多说公共JS代码 end --&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
-<p>也可以看到，我们可以写博客的时候通过comments来控制这篇是否开启评论</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/14/Hexo开启多说评论/" data-id="civ3g9w8z00010l7zeinva0g2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/13/hello-world/" class="article-date">
-  <time datetime="2016-06-13T02:34:00.000Z" itemprop="datePublished">2016-06-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/13/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Welcome-to-Likangjun"><a href="#Welcome-to-Likangjun" class="headerlink" title="Welcome to Likangjun"></a>Welcome to <a href="http://likangjun.com/">Likangjun</a></h3><p>又是一个Hello World</p>
-<p>上次写博客的时候还是WordPress</p>
-<p>现在在<a href="http://blog.jayxhj.com/" target="_blank" rel="external">jayxhj</a>的推荐下用Hexo + github 搭建了这个静态博客</p>
-<p>后续会做一些博客迁移</p>
-<p>并将继续与大家交流，并分享一些有趣的技术</p>
-<h3 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/06/13/hello-world/" data-id="civ3g9w9700040l7z5yff7j78" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 </section>
         
