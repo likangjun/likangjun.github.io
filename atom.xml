@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likangjun.com/"/>
-  <updated>2016-11-04T07:18:47.000Z</updated>
+  <updated>2016-11-11T08:32:00.000Z</updated>
   <id>http://likangjun.com/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>php中的路径研究和./ ../  __DIR__ __FILE__ getcwd() 的用法和区别</title>
+    <link href="http://likangjun.com/2016/11/11/php%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84%E7%A0%94%E7%A9%B6%20%E4%BB%A5%E5%8F%8A%20.:%20..:%20%20__DIR__%20__FILE__%20getcwd()%20%E7%9A%84%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/"/>
+    <id>http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/</id>
+    <published>2016-11-11T08:23:14.000Z</published>
+    <updated>2016-11-11T08:32:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>当前环境是mac，项目目录是<code>/web/</code><br>路径的问题特别容易混淆，特别是在include和require_once或者file_get_content()的时候，<br>view里面展示图片也会出现路径错误的问题</p>
+<p><code>.</code>表示当前目录<br><code>..</code>表示当前目录的上一级目录。<br><code>./</code>表示当前目录下的某个文件或文件夹，<br><code>../</code>表示当前目录上一级目录的文件或文件夹</p>
+<h4 id="先简单举个例子"><a href="#先简单举个例子" class="headerlink" title="先简单举个例子"></a>先简单举个例子</h4><p><img src="http://p1.bpimg.com/4851/2384e3fcf182f411.png" alt=""></p>
+<p>在<code>index.html</code>中引用css</p>
+<p>当前目录(b)下的css文件夹<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel="stylesheet" href='css/main.css'/&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel="stylesheet" href='./css/main.css'/&gt;</span><br></pre></td></tr></table></figure>
+<p>再或者是<br>当前目录的上级目录(demo)下的b目录下的css目录<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel="stylesheet" href='../b/css/main.css'/&gt;</span><br></pre></td></tr></table></figure></p>
+<p>使用图片<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src="test2.jpg"&gt;</span><br><span class="line">&lt;img src="../a/test1.jpg"&gt;</span><br></pre></td></tr></table></figure></p>
+<p>类似php中也是<br>在index.php中<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="string">"c/user.php"</span>;</span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">"./c/user.php"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>在user.php中<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="string">"../index.php"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>getcwd() ：在哪个文件里调用此文件的目录</p>
+<p>__DIR__ ： 当前内容写在哪个文件的目录</p>
+<p>__FILE__ ：当前内容写在哪个文件的目录+文件名</p>
+<h3 id="有个问题在项目中很容易出错"><a href="#有个问题在项目中很容易出错" class="headerlink" title="有个问题在项目中很容易出错"></a>有个问题在项目中很容易出错</h3><p>我们经常会在项目中require或者include引用某个php文件</p>
+<p><img src="http://p1.bqimg.com/4851/bc16e046b6918fa6.png" alt=""></p>
+<p>以yii基础版框架随便举个例子<br>运行UserController的actionList<br><code>localhost/demo/web/index.php?r=admin/user/list</code></p>
+<p>在UserController中<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="keyword">__DIR__</span>;  </span><br><span class="line"><span class="comment">// 当前内容写在哪个文件(UserController.php)的目录admin</span></span><br><span class="line"><span class="comment">// /web/demo/controllers/admin</span></span><br><span class="line"><span class="keyword">echo</span> <span class="keyword">__FILE__</span>; </span><br><span class="line"><span class="comment">// /web/demo/controllers/admin/UserController.php</span></span><br><span class="line"><span class="keyword">echo</span> getcwd(); </span><br><span class="line"><span class="comment">// 在入口文件index.php中调用的此文件，所以是index.php的目录</span></span><br><span class="line"><span class="comment">// /web/demo/web</span></span><br></pre></td></tr></table></figure></p>
+<p>然后我们在UserController.php中require_once submit.php<br>我们可能会跟上面的例子那样，以当前文件为基准去写相对路径<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="string">"../../alipay/lib/submit.php"</span></span><br></pre></td></tr></table></figure></p>
+<p>然后我们运行，却发现报错了<br><code>Failed opening required &#39;../../alipay/lib/submit.php</code></p>
+<p>“UserController.php所在目录(admin)的上级目录(controllers)的上级目录(demo)下面的alipay下面的lib”<br>“对啊，../../没错啊”</p>
+<p>仔细思考后 我们的url <code>localhost/demo/web/index.php?r=admin/user/list</code><br>我们这里的相对路径是以index.php为基准的</p>
+<p>所以这里我们应该这么写<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="string">"../alipay/lib/submit.php"</span></span><br></pre></td></tr></table></figure></p>
+<p>运行发现成功</p>
+<p>其实这里也可以这么写相对路径<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.php文件所在目录(web)的上级目录(demo)下的alipay</span></span><br><span class="line"><span class="keyword">require_once</span> getcwd().<span class="string">"/../alipay/lib/submit.php"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 当前文件目录(admin)的上级目录(controllers)的上级目录(demo)下的alipay</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span>.<span class="string">"/../../alipay/lib/submit.php"</span></span><br></pre></td></tr></table></figure></p>
+<p>如果我们在入口文件(<code>index.php</code>)定义一个全局的变量<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="string">'BASE_PATH'</span>, str_replace(<span class="string">'\\'</span>, <span class="string">'/'</span>, realpath(dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/../'</span>)));</span><br></pre></td></tr></table></figure></p>
+<p>不管在哪里<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> BASE_PATH</span><br></pre></td></tr></table></figure></p>
+<p>都会输出我们的根目录<br><code>/web/demo</code></p>
+<p>那么刚才的可以写成绝对路径<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> BASE_PATH.<span class="string">"/alipay/lib/submit.php"</span></span><br></pre></td></tr></table></figure></p>
+<p>这样代码迁移起来也更方便</p>
+]]></content>
+    
+    <summary type="html">
+    
+      php中的路径研究和./ ../  __DIR__ __FILE__ getcwd() 的用法和区别
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://likangjun.com/tags/php/"/>
+    
+  </entry>
   
   <entry>
     <title>微信开发常用接口的PHP封装</title>
@@ -209,9 +258,9 @@
     </summary>
     
     
-      <category term="ajax" scheme="http://likangjun.com/tags/ajax/"/>
-    
       <category term="php" scheme="http://likangjun.com/tags/php/"/>
+    
+      <category term="ajax" scheme="http://likangjun.com/tags/ajax/"/>
     
       <category term="即时聊天" scheme="http://likangjun.com/tags/%E5%8D%B3%E6%97%B6%E8%81%8A%E5%A4%A9/"/>
     
