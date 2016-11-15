@@ -65,6 +65,54 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-php 关于支付宝手机网站支付" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/15/php 关于支付宝手机网站支付/" class="article-date">
+  <time datetime="2016-11-15T06:46:15.000Z" itemprop="datePublished">2016-11-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/15/php 关于支付宝手机网站支付/">php 关于支付宝手机网站支付(alipay.wap.create.direct.pay.by.user)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://doc.open.alipay.com/doc2/detail?treeId=60&amp;articleId=103564&amp;docType=1" target="_blank" rel="external">官方文档</a><br><a href="http://aopsdkdownload.cn-hangzhou.alipay-pub.aliyun-inc.com/demo/alipaywapdirect.zip?spm=a219a.7629140.0.0.QiNZUG&amp;file=alipaywapdirect.zip" target="_blank" rel="external">官方demo</a></p>
+<p>手机网站支付的文档和demo给的已经特别的详细了， 这里我就说一下实际开发中值得注意的问题吧</p>
+<h4 id="1-支付宝手机网站支付，需要去支付宝的后台的签约管理添加手机支付"><a href="#1-支付宝手机网站支付，需要去支付宝的后台的签约管理添加手机支付" class="headerlink" title="1.支付宝手机网站支付，需要去支付宝的后台的签约管理添加手机支付"></a>1.支付宝手机网站支付，需要去支付宝的后台的签约管理添加手机支付</h4><p><img src="http://i1.piimg.com/567571/b79917bf703682f6.png" alt=""></p>
+<h4 id="2-构造要请求的参数数组的时候加上-quot-app-pay-quot-gt-quot-Y-quot"><a href="#2-构造要请求的参数数组的时候加上-quot-app-pay-quot-gt-quot-Y-quot" class="headerlink" title="2.构造要请求的参数数组的时候加上&quot;app_pay&quot; =&gt; &quot;Y&quot;"></a>2.构造要请求的参数数组的时候加上<code>&quot;app_pay&quot; =&gt; &quot;Y&quot;</code></h4><p>在浏览器调用的时候可以唤起支付宝客户端，如果没有安装支付宝，则继续进行手机网站支付</p>
+<h4 id="3-页面跳转同步通知return-url如果你想带其他参数也是可以的"><a href="#3-页面跳转同步通知return-url如果你想带其他参数也是可以的" class="headerlink" title="3.页面跳转同步通知return_url如果你想带其他参数也是可以的"></a>3.页面跳转同步通知<code>return_url</code>如果你想带其他参数也是可以的</h4><p>文档上是这么写的</p>
+<p>设置页面跳转同步通知页面（return_url）的路径时，不要在页面文件的后面再加上自定义参数。例如：<br>错误的写法：<a href="http://www.alipay.com/alipay/return_url.php?xx=11" target="_blank" rel="external">http://www.alipay.com/alipay/return_url.php?xx=11</a><br>正确的写法：<a href="http://www.alipay.com/alipay/return_url.php" target="_blank" rel="external">http://www.alipay.com/alipay/return_url.php</a></p>
+<p>文档这么写是因为<code>return_url</code>在验证的时候会通过<code>$_GET</code>去生成签名，这个签名会和通过<code>notify_id</code>获取到的结果做比对，所以这里<code>$_GET</code>里面不能有别的参数</p>
+<h4 id="但事实上可以通过代码来避开"><a href="#但事实上可以通过代码来避开" class="headerlink" title="但事实上可以通过代码来避开"></a>但事实上可以通过代码来避开</h4><p>比如你的return_url 为 <a href="http://xxxxxx/alipay/return_url.php?uuid=12345" target="_blank" rel="external">http://xxxxxx/alipay/return_url.php?uuid=12345</a></p>
+<p>那么在你的return_url.php就得改成<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$get_temp = $_GET;</span><br><span class="line"><span class="keyword">unset</span>($_GET[<span class="string">'uuid'</span>]);</span><br><span class="line"><span class="comment">//这个时候的$_GET是不带我们附加的参数的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//$alipay_config 配置文件参数</span></span><br><span class="line">$alipayNotify = <span class="keyword">new</span> \AlipayNotify($alipay_config);</span><br><span class="line">$verify_result = $alipayNotify-&gt;verifyReturn();</span><br><span class="line"></span><br><span class="line">$_GET = $get_temp;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这个时候就可以开始我们的逻辑了</span></span><br><span class="line">$uuid = $_GET[<span class="string">'uuid'</span>];</span><br><span class="line"><span class="keyword">if</span> ($verify_result) &#123;<span class="comment">//验证成功</span></span><br><span class="line">    <span class="comment">//交易状态</span></span><br><span class="line">    $trade_status = $_GET[<span class="string">'trade_status'</span>];</span><br><span class="line">    <span class="keyword">if</span> ($trade_status == <span class="string">'TRADE_FINISHED'</span> || $trade_status == <span class="string">'TRADE_SUCCESS'</span>) &#123;</span><br><span class="line">        <span class="comment">//交易成功       </span></span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"trade_status="</span> . $_GET[<span class="string">'trade_status'</span>];</span><br><span class="line">     &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"验证失败"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="civj57oik0002d17zdxyf8bmc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/支付/">支付</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-php 递归函数的应用(三) 层级结构数据的树状输出" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" class="article-date">
@@ -102,7 +150,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="civiwwquw00047t7z2takecux" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="civj57oiu0005d17z88p3stk6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -146,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="civiwwquz00057t7zgac00tu5" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="civj57ojg000dd17zwm384dv8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -194,7 +242,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="civiwwqv200077t7zijidb9gv" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="civj57oir0004d17zc0k8uuht" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -262,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" data-id="civiwwqvg000c7t7z26o8kfxq" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" data-id="civj57oj10009d17zz7uwcg62" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -418,7 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/" data-id="civiwwqvc000a7t7z2yhqps5d" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/" data-id="civj57ojj000ed17zi00717fe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信/">微信</a></li></ul>
@@ -462,7 +510,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="civiwwqv500097t7zw9zlscp5" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="civj57ojc000ad17zy3jen66b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片合成/">图片合成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/水印/">水印</a></li></ul>
@@ -511,7 +559,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="civiwwquq00027t7zbah6v0kv" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="civj57oix0007d17znvox0oi1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
@@ -556,7 +604,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/14/Hexo开启多说评论/" data-id="civiwwqun00017t7zgs9ngqvy" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/14/Hexo开启多说评论/" data-id="civj57oii0001d17zfqwrv3uv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -600,7 +648,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/06/13/hello-world/" data-id="civiwwqui00007t7zf9qq2u96" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/06/13/hello-world/" data-id="civj57oid0000d17zpiq8f04y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -623,7 +671,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/支付/" style="font-size: 10px;">支付</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
     </div>
   </div>
 
@@ -645,6 +693,10 @@
       <ul>
         
           <li>
+            <a href="/2016/11/15/php 关于支付宝手机网站支付/">php 关于支付宝手机网站支付(alipay.wap.create.direct.pay.by.user)</a>
+          </li>
+        
+          <li>
             <a href="/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/">PHP 递归函数的应用(三)  层级结构数据的树状输出</a>
           </li>
         
@@ -658,10 +710,6 @@
         
           <li>
             <a href="/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/">php中的路径研究和./ ../  __DIR__ __FILE__ getcwd() 的用法和区别</a>
-          </li>
-        
-          <li>
-            <a href="/2016/11/04/微信开发常用接口的PHP封装/">微信开发常用接口的PHP封装</a>
           </li>
         
       </ul>
