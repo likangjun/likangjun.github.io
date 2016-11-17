@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mysql行级锁处理并发实现抢购秒杀 | Likangjun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-site-verification" content="06XSvFZPQvqk10xzDhYBgeDo01CUCCASMBEfjflgsc4">
+  <meta name="description" content="mysql行级锁处理并发实现抢购秒杀">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql行级锁处理并发实现抢购秒杀">
+<meta property="og:url" content="http://likangjun.com/2016/11/17/mysql行级锁处理并发实现抢购秒杀/index.html">
+<meta property="og:site_name" content="Likangjun">
+<meta property="og:description" content="mysql行级锁处理并发实现抢购秒杀">
+<meta property="og:updated_time" content="2016-11-17T14:26:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql行级锁处理并发实现抢购秒杀">
+<meta name="twitter:description" content="mysql行级锁处理并发实现抢购秒杀">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Likangjun</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">Rss</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">Sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://likangjun.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-mysql行级锁处理并发实现抢购秒杀" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/17/mysql行级锁处理并发实现抢购秒杀/" class="article-date">
+  <time datetime="2016-11-17T14:17:03.000Z" itemprop="datePublished">2016-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql行级锁处理并发实现抢购秒杀
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>MySQL的锁机制比较简单，其最显著的特点是不同的存储引擎支持不同的锁机制。比如，MyISAM和MEMORY存储引擎采用的是表级锁（table-level locking）；BDB存储引擎采用的是页面锁（page-level locking），但也支持表级锁；InnoDB存储引擎既支持行级锁（row-level locking），也支持表级锁，但默认情况下是采用行级锁。</p>
+<p>1<code>表级锁</code>：直接锁定整张表，在你锁定期间，其它进程无法对该表进行写操作。如果你是写锁，则其它进程则读也不允许<br>2<code>行级锁</code>：仅对指定的记录进行加锁，这样其它进程还是可以对同一个表中的其它记录进行操作。<br>3<code>页面锁</code>：表级锁速度快，但冲突多，行级冲突少，但速度慢。所以取了折衷的页级，一次锁定相邻的一组记录。</p>
+<p>场景：现在最后只有1件库存，同时有100个或1000个请求，如何能保证只有一个用户能够抢到最后这件商品呢</p>
+<h4 id="不做并发处理的简单示范"><a href="#不做并发处理的简单示范" class="headerlink" title="不做并发处理的简单示范"></a>不做并发处理的简单示范</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionTest</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    $data = TestService::get();</span><br><span class="line">    $number = $data[<span class="string">'number'</span>];</span><br><span class="line">    <span class="comment">//还有库存</span></span><br><span class="line">    <span class="keyword">if</span> ($number &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">//库存减1</span></span><br><span class="line">        $result = TestService::update($data[<span class="string">'id'</span>]);</span><br><span class="line">        <span class="keyword">if</span> ($result) &#123;</span><br><span class="line">	    <span class="comment">//插入订单</span></span><br><span class="line">            TestService::insert();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里<code>update()</code>执行的sql语句是<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> goods <span class="keyword">set</span> <span class="built_in">number</span> = <span class="built_in">number</span><span class="number">-1</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="string">'1'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>用ab做压力测试<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/ab -n1000 -c100 <span class="string">"http://127.0.0.1/xxxxxxxx/test"</span></span><br></pre></td></tr></table></figure></p>
+<p><code>100</code>个用户<code>1000</code>个请求<br>测试完看数据库，发现number变成了<code>-3</code>，订单表里面出现了<code>4</code>个订单<br>出现这个结果是在我们意料之中的，并发越大，订单数也越多，超卖的也越多</p>
+<p>同样的方法，我们只改一下<code>sql</code>再做测试</p>
+<h4 id="利用mysql行级锁"><a href="#利用mysql行级锁" class="headerlink" title="利用mysql行级锁"></a>利用mysql行级锁</h4><p>将<code>update()</code>的sql语句改为<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> goods <span class="keyword">set</span> <span class="built_in">number</span> = <span class="built_in">number</span><span class="number">-1</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="string">'1'</span> <span class="keyword">and</span> <span class="built_in">number</span> &gt; <span class="string">'0'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>再用ab测试</p>
+<h5 id="会发现number为0，订单表也只有1个订单"><a href="#会发现number为0，订单表也只有1个订单" class="headerlink" title="会发现number为0，订单表也只有1个订单"></a>会发现number为0，订单表也只有1个订单</h5><p>甚至1000个用户10000个请求测试，依然如此</p>
+<p>分析下发现，当条件加上<code>number &gt; &#39;0&#39;</code>后，假如有3个并发，同时执行这条sql<br>第一个执行的时候，mysql的行级锁会将此条记录加锁，当这个执行完以后，number已被更新为0</p>
+<p>此时锁打开，第二个第三个执行的时候，where条件<code>number &gt; &#39;0&#39;</code>无法满足，所以后面的请求将无法再去更新number和下单</p>
+<p>而之前不加这个<code>number &gt; &#39;0&#39;</code>这个条件的话，有锁和没锁是无所谓的，都会执行，并且完成update</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理并发实现抢购秒杀/" data-id="civmga2wb0000j07zl39e2ad5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/15/php 关于支付宝手机网站支付/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">php 关于支付宝手机网站支付(alipay.wap.create.direct.pay.by.user)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <section id="comments">
+        <!-- 多说评论框 start -->
+        <div class="ds-thread" data-thread-key="post-mysql行级锁处理并发实现抢购秒杀" data-title="mysql行级锁处理并发实现抢购秒杀" data-url="http://likangjun.com/2016/11/17/mysql行级锁处理并发实现抢购秒杀/"></div>
+        <!-- 多说评论框 end -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <script type="text/javascript">
+            var duoshuoQuery = {short_name:'likangjun'};
+            (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+        </script>
+        <!-- 多说公共JS代码 end -->
+    </section>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/支付/" style="font-size: 10px;">支付</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/17/mysql行级锁处理并发实现抢购秒杀/">mysql行级锁处理并发实现抢购秒杀</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/15/php 关于支付宝手机网站支付/">php 关于支付宝手机网站支付(alipay.wap.create.direct.pay.by.user)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/">PHP 递归函数的应用(三)  层级结构数据的树状输出</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/">PHP 递归函数的应用(二) 文件夹目录遍历</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/">PHP 递归函数的应用(一) 数组的无限级分类和逆过程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Likangjun<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      
+      <!-- Analytics -->
+      <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260672741' style='margin-left: 10px'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1260672741%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+      <!-- End Analytics -->
+      
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">Rss</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">Sitemap</a>
+  
+</nav>
+    
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
