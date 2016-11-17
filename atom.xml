@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likangjun.com/"/>
-  <updated>2016-11-17T14:26:18.000Z</updated>
+  <updated>2016-11-17T14:33:17.000Z</updated>
   <id>http://likangjun.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>mysql行级锁处理并发实现抢购秒杀</title>
-    <link href="http://likangjun.com/2016/11/17/mysql%E8%A1%8C%E7%BA%A7%E9%94%81%E5%A4%84%E7%90%86%E5%B9%B6%E5%8F%91%E5%AE%9E%E7%8E%B0%E6%8A%A2%E8%B4%AD%E7%A7%92%E6%9D%80/"/>
-    <id>http://likangjun.com/2016/11/17/mysql行级锁处理并发实现抢购秒杀/</id>
+    <title>mysql行级锁处理小规模并发实现抢购秒杀</title>
+    <link href="http://likangjun.com/2016/11/17/mysql%E8%A1%8C%E7%BA%A7%E9%94%81%E5%A4%84%E7%90%86%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B9%B6%E5%8F%91%E5%AE%9E%E7%8E%B0%E6%8A%A2%E8%B4%AD%E7%A7%92%E6%9D%80/"/>
+    <id>http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/</id>
     <published>2016-11-17T14:17:03.000Z</published>
-    <updated>2016-11-17T14:26:18.000Z</updated>
+    <updated>2016-11-17T14:33:17.000Z</updated>
     
     <content type="html"><![CDATA[<p>MySQL的锁机制比较简单，其最显著的特点是不同的存储引擎支持不同的锁机制。比如，MyISAM和MEMORY存储引擎采用的是表级锁（table-level locking）；BDB存储引擎采用的是页面锁（page-level locking），但也支持表级锁；InnoDB存储引擎既支持行级锁（row-level locking），也支持表级锁，但默认情况下是采用行级锁。</p>
 <p>1<code>表级锁</code>：直接锁定整张表，在你锁定期间，其它进程无法对该表进行写操作。如果你是写锁，则其它进程则读也不允许<br>2<code>行级锁</code>：仅对指定的记录进行加锁，这样其它进程还是可以对同一个表中的其它记录进行操作。<br>3<code>页面锁</code>：表级锁速度快，但冲突多，行级冲突少，但速度慢。所以取了折衷的页级，一次锁定相邻的一组记录。</p>
@@ -40,7 +40,7 @@
     
     <summary type="html">
     
-      mysql行级锁处理并发实现抢购秒杀
+      mysql行级锁处理小规模并发实现抢购秒杀
     
     </summary>
     
