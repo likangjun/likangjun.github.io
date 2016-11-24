@@ -65,6 +65,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Hexo开启多说评论" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/14/Hexo开启多说评论/" class="article-date">
+  <time datetime="2016-10-14T01:11:02.000Z" itemprop="datePublished">2016-10-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/14/Hexo开启多说评论/">Hexo开启多说评论</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先要在<a href="http://duoshuo.com/" target="_blank" rel="external">多说</a>中申请一个账号，会得到一个多说的二级域名，我的就是<a href="http://likangjun.duoshuo.com" target="_blank" rel="external">http://likangjun.duoshuo.com</a></p>
+<p>然后在hexo根部目录下<code>_config.yml</code>里配置自己的多说账号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Comments</span></span><br><span class="line">duoshuo_shortname: liakngjun</span><br></pre></td></tr></table></figure></p>
+<p>记得: 后面有一个空格</p>
+<p>最后在主题文件<code>themes\landscape\layout\_partial\article.ejs</code><br>找到<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (!index &amp;&amp; post.comments &amp;&amp; config.disqus_shortname)&#123; %&gt;</span><br><span class="line"> &lt;section id="comments"&gt;</span><br><span class="line">   &lt;div id="disqus_thread"&gt;</span><br><span class="line">     &lt;noscript&gt;Please enable JavaScript to view the &lt;a href="//disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</span><br><span class="line">   &lt;/div&gt;</span><br><span class="line"> &lt;/section&gt;</span><br><span class="line"> &lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>改为<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (!index &amp;&amp; post.comments &amp;&amp; config.duoshuo_shortname)&#123; %&gt;</span><br><span class="line">    &lt;section id="comments"&gt;</span><br><span class="line">        &lt;!-- 多说评论框 start --&gt;</span><br><span class="line">        &lt;div class="ds-thread" data-thread-key="&lt;%= post.layout %&gt;-&lt;%= post.slug %&gt;" data-title="&lt;%= post.title %&gt;" data-url="&lt;%= page.permalink %&gt;"&gt;&lt;/div&gt;</span><br><span class="line">        &lt;!-- 多说评论框 end --&gt;</span><br><span class="line">        &lt;!-- 多说公共JS代码 start (一个网页只需插入一次) --&gt;</span><br><span class="line">        &lt;script type="text/javascript"&gt;</span><br><span class="line">            var duoshuoQuery = &#123;short_name:'&lt;%= config.duoshuo_shortname %&gt;'&#125;;</span><br><span class="line">            (function() &#123;</span><br><span class="line">                var ds = document.createElement('script');</span><br><span class="line">                ds.type = 'text/javascript';ds.async = true;</span><br><span class="line">                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';</span><br><span class="line">                ds.charset = 'UTF-8';</span><br><span class="line">                (document.getElementsByTagName('head')[0]</span><br><span class="line">                || document.getElementsByTagName('body')[0]).appendChild(ds);</span><br><span class="line">            &#125;)();</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">        &lt;!-- 多说公共JS代码 end --&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>也可以看到，我们可以写博客的时候通过comments来控制这篇是否开启评论</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/10/14/Hexo开启多说评论/" data-id="civwl2jm30004ip7zawfllz4d" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/06/13/hello-world/" class="article-date">
@@ -96,7 +141,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/06/13/hello-world/" data-id="civmgj9ie0000na7z5499i06i" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/06/13/hello-world/" data-id="civwl2jm60006ip7z7h2ehy8o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -123,7 +168,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/支付/" style="font-size: 10px;">支付</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/支付/" style="font-size: 10px;">支付</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
     </div>
   </div>
 
@@ -145,6 +190,10 @@
       <ul>
         
           <li>
+            <a href="/2016/11/25/Redis用法和总结/">Redis用法和总结</a>
+          </li>
+        
+          <li>
             <a href="/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/">mysql行级锁处理小规模并发实现抢购秒杀</a>
           </li>
         
@@ -158,10 +207,6 @@
         
           <li>
             <a href="/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/">PHP 递归函数的应用(二) 文件夹目录遍历</a>
-          </li>
-        
-          <li>
-            <a href="/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/">PHP 递归函数的应用(一) 数组的无限级分类和逆过程</a>
           </li>
         
       </ul>
