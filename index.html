@@ -87,7 +87,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>Redis 是一个 Key-Value 存储系统。支持的数据类型包括string(字符串)、hash(哈希)、list(链表)、set(集合)和zset(有序集合)等等。</p>
+        <h3 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>MySQL：关系型数据库</p>
+<p>NoSQL：非关系型的数据库，数据之间无关系，无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式，有非常高的读写性能，尤其在大数据量下，表现非常优秀。</p>
+<ul>
+<li>键值(Key-Value)存储数据库(Redis)</li>
+<li>列存储数据库</li>
+<li>文档型数据库(MongoDb)</li>
+<li>图形(Graph)数据库</li>
+</ul>
+<p>Redis 就是一个 Key-Value 存储系统。支持的数据类型包括string(字符串)、hash(哈希)、list(链表)、set(集合)和zset(有序集合)等等。</p>
 <h4 id="Redis的性能"><a href="#Redis的性能" class="headerlink" title="Redis的性能"></a>Redis的性能</h4><p>官方的bench-mark数据：<br>测试完成了50个并发执行100000个请求。<br>设置和获取的值是一个256字节字符串。<br>结果:读的速度是110000次/s,写的速度是81000次/s 。</p>
 <h4 id="Redis的持久化"><a href="#Redis的持久化" class="headerlink" title="Redis的持久化"></a>Redis的持久化</h4><p>Redis运行在内存中但是可以持久化到磁盘<br>Redis提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.</p>
 <p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照。</p>
@@ -135,13 +143,14 @@
 <p>Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的、并且是很小的。</p>
 <p>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 $ {2^{64}} $个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。</p>
 <p>但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Redis远远不只是缓存这么简单，缓存只是其中的一个小部分<br>Redis更多的在于其丰富的数据结构，可以使很多功能实现起来更加简单有效，极大的提高效率和性能</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Redis远远不只是缓存这么简单，缓存只是其中的一个小部分<br>Redis更多的在于其丰富的数据结构和灵活性，可以使很多功能实现起来更加简单有效，极大的提高效率和性能</p>
+<p>Redis数据库在以下的这几种情况下比较适用：<br>1、数据模型比较简单；<br>2、需要灵活性更强的IT系统；<br>3、对数据库性能要求较高；<br>4、不需要高度的数据一致性；<br>5、对于给定key，比较容易映射复杂值的环境。</p>
 <p>注：O(1)指的是常数时间运行，比如操作对象为一个链表，对其有一个算法，O(1)时间指的是，无论链表大或者小，所耗费的时间都是一样的;<br>O(n)指的是某算法的运行时间与输入规模成正比，即，若输入规模为T,花费时间为N,则输入规模2T时花费时间为2N</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="civwlkbj60000lz7z9fv9c0hh" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciw0tir4d0000jc7zkzhwbc1m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
@@ -194,7 +203,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="civwlkbjx0006lz7zo01qwq9i" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="ciw0tir4t0003jc7z990qyix2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
@@ -242,7 +251,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="civwlkbjr0003lz7zjy26kobc" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="ciw0tir4v0004jc7zdu2nc1m9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/支付/">支付</a></li></ul>
@@ -292,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="civwlkbkd000elz7zmnwiy06p" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="ciw0tir5f000fjc7znlzdvx9s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -336,7 +345,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="civwlkbk7000blz7zondj8g0m" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="ciw0tir5c000djc7zfas5ak78" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -384,7 +393,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="civwlkbjz0007lz7z559rjbb4" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="ciw0tir500008jc7z3gx85rjz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -452,7 +461,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" data-id="civwlkbkm000ilz7zibs2pvv0" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" data-id="ciw0tir530009jc7zd9pbqtzc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -608,7 +617,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/" data-id="civwlkbkp000klz7z4y7wemrs" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/" data-id="ciw0tir5i000ijc7zlkln3d2k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信/">微信</a></li></ul>
@@ -652,7 +661,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="civwlkbkj000glz7z2o1561vp" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="ciw0tir5h000gjc7ztingvipq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片合成/">图片合成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/水印/">水印</a></li></ul>
@@ -701,7 +710,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="civwlkbk5000alz7zdthau7t4" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="ciw0tir56000cjc7zrfu951nz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
