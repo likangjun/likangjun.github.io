@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://likangjun.com/2016/11/25/Redis用法和总结/index.html">
 <meta property="og:site_name" content="Likangjun">
 <meta property="og:description" content="Redis用法和总结">
-<meta property="og:updated_time" content="2016-11-27T15:45:14.000Z">
+<meta property="og:updated_time" content="2016-11-28T16:29:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis用法和总结">
 <meta name="twitter:description" content="Redis用法和总结">
@@ -97,8 +97,9 @@
 <p>Redis 就是一个 Key-Value 存储系统。支持的数据类型包括string(字符串)、hash(哈希)、list(链表)、set(集合)和zset(有序集合)等等。</p>
 <h4 id="Redis的性能"><a href="#Redis的性能" class="headerlink" title="Redis的性能"></a>Redis的性能</h4><p>官方的bench-mark数据：<br>测试完成了50个并发执行100000个请求。<br>设置和获取的值是一个256字节字符串。<br>结果:读的速度是110000次/s,写的速度是81000次/s 。</p>
 <h4 id="Redis的持久化"><a href="#Redis的持久化" class="headerlink" title="Redis的持久化"></a>Redis的持久化</h4><p>Redis运行在内存中但是可以持久化到磁盘<br>Redis提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.</p>
-<p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照。</p>
-<p>AOF 持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。<br>Redis 可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整</p>
+<p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照。当redis需要做持久化时，redis会fork一个子进程；子进程读出数据并将数据写到磁盘上一个临时RDB文件中；当子进程完成写临时文件后，将原来的RDB替换掉，这样的好处就是可以copy-on-write，缺点就是在redis异常死掉时， 最近的数据会丢失</p>
+<p>AOF redis每执行一个修改数据的命令，都会把它添加到aof文件中，当redis重启时，将会读取AOF文件进行“重放”以恢复到redis关闭前的最后时刻。</p>
+<p>Redis 可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整</p>
 <h3 id="Redis为什么这么快"><a href="#Redis为什么这么快" class="headerlink" title="Redis为什么这么快"></a>Redis为什么这么快</h3><p>1）绝大部分请求是纯粹的内存操作（非常快速）<br>2）采用单线程,避免了不必要的线程切换开销<br>3）非阻塞IO </p>
 <h3 id="Redis用法"><a href="#Redis用法" class="headerlink" title="Redis用法"></a>Redis用法</h3><p>redis中文网：<a href="http://www.redis.net.cn/" target="_blank" rel="external">http://www.redis.net.cn/</a><br>php-redis文档：<a href="http://www.cnblogs.com/weafer/archive/2011/09/21/2184059.html" target="_blank" rel="external">http://www.cnblogs.com/weafer/archive/2011/09/21/2184059.html</a></p>
 <blockquote>
@@ -140,16 +141,18 @@
 <blockquote>
 <h3 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a><strong><code>HyperLogLog</code></strong></h3></blockquote>
 <p>Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的、并且是很小的。</p>
-<p>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 $ {2^{64}} $个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。</p>
+<p>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。</p>
 <p>但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PFADD code <span class="string">"redis"</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFADD code <span class="string">"php"</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFADD code <span class="string">"java"</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT w3ckey</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Redis远远不只是缓存这么简单，缓存只是其中的一个小部分<br>Redis更多的在于其丰富的数据结构和灵活性，可以使很多功能实现起来更加简单有效，极大的提高效率和性能</p>
 <p>Redis数据库在以下的这几种情况下比较适用：<br>1、数据模型比较简单；<br>2、需要灵活性更强的IT系统；<br>3、对数据库性能要求较高；<br>4、不需要高度的数据一致性；<br>5、对于给定key，比较容易映射复杂值的环境。</p>
 <p>注：O(1)指的是常数时间运行，比如操作对象为一个链表，对其有一个算法，O(1)时间指的是，无论链表大或者小，所耗费的时间都是一样的;<br>O(n)指的是某算法的运行时间与输入规模成正比，即，若输入规模为T,花费时间为N,则输入规模2T时花费时间为2N</p>
+<p>Copy-on-Write简称COW，基本的原理是：<br>当我要修改数据块A的内容的时候，我先把A读出来，写到B块里，如果写的过程掉电了，原来A的内容还在，如果是还写到原来的位置上，那么写入的数据究竟写了多少就不确定了，会不会破坏原来的数据也不好说。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciw0tir4d0000jc7zkzhwbc1m" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciw2al71w0004k67zp1nnv42k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
