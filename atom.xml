@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likangjun.com/"/>
-  <updated>2016-11-28T16:29:37.000Z</updated>
+  <updated>2016-11-28T16:34:48.000Z</updated>
   <id>http://likangjun.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://likangjun.com/2016/11/25/Redis%E7%94%A8%E6%B3%95%E5%92%8C%E6%80%BB%E7%BB%93/"/>
     <id>http://likangjun.com/2016/11/25/Redis用法和总结/</id>
     <published>2016-11-24T16:19:01.000Z</published>
-    <updated>2016-11-28T16:29:37.000Z</updated>
+    <updated>2016-11-28T16:34:48.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>MySQL：关系型数据库</p>
 <p>NoSQL：非关系型的数据库，数据之间无关系，无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式，有非常高的读写性能，尤其在大数据量下，表现非常优秀。</p>
@@ -32,7 +32,8 @@
 </ul>
 <p>Redis 就是一个 Key-Value 存储系统。支持的数据类型包括string(字符串)、hash(哈希)、list(链表)、set(集合)和zset(有序集合)等等。</p>
 <h4 id="Redis的性能"><a href="#Redis的性能" class="headerlink" title="Redis的性能"></a>Redis的性能</h4><p>官方的bench-mark数据：<br>测试完成了50个并发执行100000个请求。<br>设置和获取的值是一个256字节字符串。<br>结果:读的速度是110000次/s,写的速度是81000次/s 。</p>
-<h4 id="Redis的持久化"><a href="#Redis的持久化" class="headerlink" title="Redis的持久化"></a>Redis的持久化</h4><p>Redis运行在内存中但是可以持久化到磁盘<br>Redis提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.</p>
+<h4 id="Redis的持久化"><a href="#Redis的持久化" class="headerlink" title="Redis的持久化"></a>Redis的持久化</h4><p>Redis运行在内存中但是可以持久化到磁盘</p>
+<p>Redis提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.</p>
 <p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照。当redis需要做持久化时，redis会fork一个子进程；子进程读出数据并将数据写到磁盘上一个临时RDB文件中；当子进程完成写临时文件后，将原来的RDB替换掉，这样的好处就是可以copy-on-write，缺点就是在redis异常死掉时， 最近的数据会丢失</p>
 <p>AOF redis每执行一个修改数据的命令，都会把它添加到aof文件中，当redis重启时，将会读取AOF文件进行“重放”以恢复到redis关闭前的最后时刻。</p>
 <p>Redis 可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整</p>
