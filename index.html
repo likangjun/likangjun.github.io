@@ -146,6 +146,9 @@
 <p>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。</p>
 <p>但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PFADD code <span class="string">"redis"</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFADD code <span class="string">"php"</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFADD code <span class="string">"java"</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT w3ckey</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+<h3 id="主从同步"><a href="#主从同步" class="headerlink" title="主从同步"></a>主从同步</h3><p>主从同步可以防止主机坏掉导致网站不能正常运作，这种方法即把从机设置成主机即可</p>
+<p>Redis主从同步设置很简单，设置到Slave服务器后，Slave自动和Master建立连接</p>
+<p>第一阶段<br>1.Slave服务器主动连接到Master服务器<br>2.Slave服务器发送SYCN命令到Master服务器请求同步<br>3.Master服务器备份数据到rdb文件<br>4.Master服务器把rdb文件传输到Slave服务器<br>5.Slave服务器清空数据库数据，把rdb文件数据导入到数据库<br>第二阶段<br>Master服务器把用户所有更改数据的操作，通过命令转发给所有的Slave服务器，Slave服务器只需要执行Master服务器发送过来的命令就可以达到同步的效果</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Redis远远不只是缓存这么简单，缓存只是其中的一个小部分<br>Redis更多的在于其丰富的数据结构和灵活性，可以使很多功能实现起来更加简单有效，极大的提高效率和性能</p>
 <p>Redis数据库在以下的这几种情况下比较适用：<br>1、数据模型比较简单；<br>2、需要灵活性更强的IT系统；<br>3、对数据库性能要求较高；<br>4、不需要高度的数据一致性；<br>5、对于给定key，比较容易映射复杂值的环境。</p>
 <p>注：O(1)指的是常数时间运行，比如操作对象为一个链表，对其有一个算法，O(1)时间指的是，无论链表大或者小，所耗费的时间都是一样的;<br>O(n)指的是某算法的运行时间与输入规模成正比，即，若输入规模为T,花费时间为N,则输入规模2T时花费时间为2N</p>
@@ -154,7 +157,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciw2apcoe0000oe7z37mdca09" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciw6fj97f0001ef7zv52hfr9v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
@@ -207,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="ciw2apcor0004oe7z5c1dl4ur" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="ciw6fj97u0009ef7zh11ym3te" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
@@ -255,7 +258,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="ciw2apcov0008oe7zi0rvr1lh" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="ciw6fj97n0004ef7zkgbzrsap" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/支付/">支付</a></li></ul>
@@ -305,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="ciw2apcpd000ioe7zmhdz9p7v" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="ciw6fj985000def7zvjrgtdl2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -349,7 +352,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="ciw2apcp1000coe7zxfj5r9ea" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="ciw6fj97s0008ef7z9a8u2hwa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -397,7 +400,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="ciw2apcos0006oe7z2vwlh6i8" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="ciw6fj97o0006ef7zvo6c9w3z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -465,7 +468,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" data-id="ciw2apcp9000foe7zxeghlklg" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" data-id="ciw6fj988000fef7z7cdl1eu5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -621,7 +624,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/" data-id="ciw2apcpb000goe7z24tfpr0e" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/04/微信开发常用接口的PHP封装/" data-id="ciw6fj98e000jef7z5ziveb1f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信/">微信</a></li></ul>
@@ -665,7 +668,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="ciw2apcp7000doe7zfoi0e642" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/27/php合成图片加水印/" data-id="ciw6fj98a000gef7z3qzkyaa8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片合成/">图片合成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/水印/">水印</a></li></ul>
@@ -714,7 +717,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="ciw2apcoy0009oe7znai5ectk" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="ciw6fj97y000cef7zt085ak81" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
