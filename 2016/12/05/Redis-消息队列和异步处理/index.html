@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://likangjun.com/2016/12/05/Redis-消息队列和异步处理/index.html">
 <meta property="og:site_name" content="Likangjun">
 <meta property="og:description" content="Redis-消息队列和异步处理">
-<meta property="og:updated_time" content="2016-12-05T13:50:10.000Z">
+<meta property="og:updated_time" content="2016-12-15T14:45:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis-消息队列和异步处理">
 <meta name="twitter:description" content="Redis-消息队列和异步处理">
@@ -95,6 +95,7 @@
 <p>第一个案例里面可以用Redis做消息中转站，用一个list存放我们的聊天记录。</p>
 <p>利用Redis的性能，我们可以把这些请求都写到缓存。然后后台启用一个crontab定时任务，每分钟执行，把队列里的数据拿出来，存到MySQL，甚至可以每10秒，5秒做一次操作</p>
 <p>这里给大家一个简单的demo</p>
+<a id="more"></a>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//插入消息队列</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionPush</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	$key = <span class="string">'chatLog:'</span> . date(<span class="string">"Ymd"</span>);</span><br><span class="line">    $content = <span class="string">'测试内容'</span>;</span><br><span class="line">    $data = [</span><br><span class="line">        <span class="string">'user_id'</span> =&gt; <span class="number">1</span>,</span><br><span class="line">        <span class="string">'create_time'</span> =&gt; date(<span class="string">"Y-m-d H:i:s"</span>),</span><br><span class="line">        <span class="string">'content'</span> =&gt; $content</span><br><span class="line">    ];</span><br><span class="line">    RedCache::rPush($key, json_encode($data));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//pop插入数据库</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionPop</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	$key = <span class="string">'chatLog:'</span> . date(<span class="string">"Ymd"</span>);</span><br><span class="line">    $length = RedCache::lLen($key);</span><br><span class="line">    <span class="keyword">if</span> ($length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $length; $i++) &#123;</span><br><span class="line">            $data = RedCache::lPop($key);</span><br><span class="line">            TestService::insertChat(json_decode($data, <span class="keyword">true</span>));</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>利用linux的crontab定时任务异步的去调用<code>actionPop</code></p>
 <p>因为crontab的最快频率是1分钟调用一次，如果实时性要求很高，比如2秒</p>
@@ -118,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/12/05/Redis-消息队列和异步处理/" data-id="ciwgdp9xs0000ok7z32tih3xr" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/12/05/Redis-消息队列和异步处理/" data-id="ciwqhb8dm0001td7za49ywsox" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>

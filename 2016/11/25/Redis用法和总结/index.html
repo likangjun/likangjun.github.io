@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://likangjun.com/2016/11/25/Redis用法和总结/index.html">
 <meta property="og:site_name" content="Likangjun">
 <meta property="og:description" content="Redis用法和总结">
-<meta property="og:updated_time" content="2016-12-01T14:00:56.000Z">
+<meta property="og:updated_time" content="2016-12-15T14:46:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis用法和总结">
 <meta name="twitter:description" content="Redis用法和总结">
@@ -102,6 +102,7 @@
 <p>AOF redis每执行一个修改数据的命令，都会把它添加到aof文件中，当redis重启时，将会读取AOF文件进行“重放”以恢复到redis关闭前的最后时刻。</p>
 <p>Redis 可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整</p>
 <h3 id="Redis为什么这么快"><a href="#Redis为什么这么快" class="headerlink" title="Redis为什么这么快"></a>Redis为什么这么快</h3><p>1）绝大部分请求是纯粹的内存操作（非常快速）<br>2）采用单线程,避免了不必要的线程切换开销<br>3）非阻塞IO </p>
+<a id="more"></a>
 <h3 id="Redis用法"><a href="#Redis用法" class="headerlink" title="Redis用法"></a>Redis用法</h3><p>redis中文网：<a href="http://www.redis.net.cn/" target="_blank" rel="external">http://www.redis.net.cn/</a><br>php-redis文档：<a href="http://www.cnblogs.com/weafer/archive/2011/09/21/2184059.html" target="_blank" rel="external">http://www.cnblogs.com/weafer/archive/2011/09/21/2184059.html</a></p>
 <blockquote>
 <h3 id="string-字符串"><a href="#string-字符串" class="headerlink" title="string(字符串)"></a><strong><code>string(字符串)</code></strong></h3></blockquote>
@@ -156,7 +157,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciwgdp9y60006ok7zjjksccb9" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="ciwqhb8dz0009td7ztb1jrwlj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>

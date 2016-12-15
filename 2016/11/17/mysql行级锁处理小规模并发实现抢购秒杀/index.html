@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/index.html">
 <meta property="og:site_name" content="Likangjun">
 <meta property="og:description" content="mysql行级锁处理小规模并发实现抢购秒杀">
-<meta property="og:updated_time" content="2016-11-17T14:33:17.000Z">
+<meta property="og:updated_time" content="2016-12-15T14:42:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql行级锁处理小规模并发实现抢购秒杀">
 <meta name="twitter:description" content="mysql行级锁处理小规模并发实现抢购秒杀">
@@ -88,6 +88,7 @@
       
         <p>MySQL的锁机制比较简单，其最显著的特点是不同的存储引擎支持不同的锁机制。比如，MyISAM和MEMORY存储引擎采用的是表级锁（table-level locking）；BDB存储引擎采用的是页面锁（page-level locking），但也支持表级锁；InnoDB存储引擎既支持行级锁（row-level locking），也支持表级锁，但默认情况下是采用行级锁。</p>
 <p>1<code>表级锁</code>：直接锁定整张表，在你锁定期间，其它进程无法对该表进行写操作。如果你是写锁，则其它进程则读也不允许<br>2<code>行级锁</code>：仅对指定的记录进行加锁，这样其它进程还是可以对同一个表中的其它记录进行操作。<br>3<code>页面锁</code>：表级锁速度快，但冲突多，行级冲突少，但速度慢。所以取了折衷的页级，一次锁定相邻的一组记录。</p>
+<a id="more"></a>
 <p>场景：现在最后只有1件库存，同时有100个或1000个请求，如何能保证只有一个用户能够抢到最后这件商品呢</p>
 <h4 id="不做并发处理的简单示范"><a href="#不做并发处理的简单示范" class="headerlink" title="不做并发处理的简单示范"></a>不做并发处理的简单示范</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionTest</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    $data = TestService::get();</span><br><span class="line">    $number = $data[<span class="string">'number'</span>];</span><br><span class="line">    <span class="comment">//还有库存</span></span><br><span class="line">    <span class="keyword">if</span> ($number &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">//库存减1</span></span><br><span class="line">        $result = TestService::update($data[<span class="string">'id'</span>]);</span><br><span class="line">        <span class="keyword">if</span> ($result) &#123;</span><br><span class="line">	    <span class="comment">//插入订单</span></span><br><span class="line">            TestService::insert();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里<code>update()</code>执行的sql语句是<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> goods <span class="keyword">set</span> <span class="built_in">number</span> = <span class="built_in">number</span><span class="number">-1</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="string">'1'</span>;</span><br></pre></td></tr></table></figure></p>
@@ -104,7 +105,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="ciwgdp9y40004ok7z6w2s2npe" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="ciwqhb8dt0004td7zr9pafw7s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
