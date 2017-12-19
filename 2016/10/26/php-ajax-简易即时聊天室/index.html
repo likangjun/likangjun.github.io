@@ -12,12 +12,10 @@
 <meta property="og:url" content="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/index.html">
 <meta property="og:site_name" content="Likangjun">
 <meta property="og:description" content="php+ajax 简易即时聊天室">
-<meta property="og:image" content="http://p1.bpimg.com/567571/25652de43fea77e3.png">
-<meta property="og:updated_time" content="2016-10-27T14:42:47.000Z">
+<meta property="og:updated_time" content="2017-12-19T02:45:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="php+ajax 简易即时聊天室">
 <meta name="twitter:description" content="php+ajax 简易即时聊天室">
-<meta name="twitter:image" content="http://p1.bpimg.com/567571/25652de43fea77e3.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -90,7 +88,7 @@
       
         <p>github的地址是：<a href="https://github.com/likangjun/chat" target="_blank" rel="external">https://github.com/likangjun/chat</a><br>demo: <a href="http://demo.likangjun.com/chat" target="_blank" rel="external">http://demo.likangjun.com/chat</a></p>
 <p>这里是用<code>MySQL</code>和<code>txt</code>文件来保存的聊天记录，然后用js去不断的请求聊天内容展现到页面上而达到了即时的效果，这里也可以用<code>redis</code>这种<code>nosql</code>。之前还在网上看到过一个<code>PHP+Swoole</code>扩展的即时聊天项目，地址是<a href="https://github.com/matyhtf/php-webim" target="_blank" rel="external">https://github.com/matyhtf/php-webim</a> ，也值得去学习学习</p>
-<p>先看下文件结构<br><img src="http://p1.bpimg.com/567571/25652de43fea77e3.png" alt=""></p>
+<p>先看下文件结构<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">chat</span><br><span class="line"></span><br><span class="line">    ├─ ajax.php</span><br><span class="line"></span><br><span class="line">    ├─ chat.php</span><br><span class="line"></span><br><span class="line">    ├─ conn.inc</span><br><span class="line"></span><br><span class="line">    ├─ css</span><br><span class="line"></span><br><span class="line">    │    ├─ main.css</span><br><span class="line"></span><br><span class="line">    │    └─ style.css</span><br><span class="line"></span><br><span class="line">    ├─ get.php</span><br><span class="line"></span><br><span class="line">    ├─ image</span><br><span class="line"></span><br><span class="line">    │    ├─ bg.jpg</span><br><span class="line"></span><br><span class="line">    │    ├─ close.png</span><br><span class="line"></span><br><span class="line">    │    ├─ logo.jpg</span><br><span class="line"></span><br><span class="line">    │    └─ user.jpg</span><br><span class="line"></span><br><span class="line">    ├─ index.php</span><br><span class="line"></span><br><span class="line">    ├─ jquery-1.6.min.js</span><br><span class="line"></span><br><span class="line">    ├─ log</span><br><span class="line"></span><br><span class="line">    │    └─ 20161026.txt</span><br><span class="line"></span><br><span class="line">    ├─ login.php</span><br><span class="line"></span><br><span class="line">    ├─ logout.php</span><br><span class="line"></span><br><span class="line">    └─ README.md</span></span><br></pre></td></tr></table></figure></p>
 <p><code>log</code>是聊天记录存放目录</p>
 <p><code>conn</code>是用来链接数据库的</p>
 <p><code>index</code>，<code>login</code>，<code>logout</code>是登录，退出这些页面</p>
@@ -102,7 +100,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="cjbczzpjl000er77zc9wjyfhg" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="cjbd1bpp2000xzg7znzpk23qo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
