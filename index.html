@@ -65,6 +65,117 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Redis用法和总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/25/Redis用法和总结/" class="article-date">
+  <time datetime="2016-11-24T16:19:01.000Z" itemprop="datePublished">2016-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/25/Redis用法和总结/">Redis用法和总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>MySQL：关系型数据库</p>
+<p>NoSQL：非关系型的数据库，数据之间无关系，无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式，有非常高的读写性能，尤其在大数据量下，表现非常优秀。</p>
+<ul>
+<li>键值(Key-Value)存储数据库(Redis)</li>
+<li>列存储数据库</li>
+<li>文档型数据库(MongoDb)</li>
+<li>图形(Graph)数据库</li>
+</ul>
+<p>Redis 就是一个 Key-Value 存储系统。支持的数据类型包括string(字符串)、hash(哈希)、list(链表)、set(集合)和zset(有序集合)等等。</p>
+<h4 id="Redis的性能"><a href="#Redis的性能" class="headerlink" title="Redis的性能"></a>Redis的性能</h4><p>官方的bench-mark数据：<br>测试完成了50个并发执行100000个请求。<br>设置和获取的值是一个256字节字符串。<br>结果:读的速度是110000次/s,写的速度是81000次/s 。</p>
+<h4 id="Redis的持久化"><a href="#Redis的持久化" class="headerlink" title="Redis的持久化"></a>Redis的持久化</h4><p>Redis运行在内存中但是可以持久化到磁盘</p>
+<p>Redis提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.</p>
+<p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照。当redis需要做持久化时，redis会fork一个子进程；子进程读出数据并将数据写到磁盘上一个临时RDB文件中；当子进程完成写临时文件后，将原来的RDB替换掉，这样的好处就是可以copy-on-write，缺点就是在redis异常死掉时， 最近的数据会丢失</p>
+<p>AOF redis每执行一个修改数据的命令，都会把它添加到aof文件中，当redis重启时，将会读取AOF文件进行“重放”以恢复到redis关闭前的最后时刻。</p>
+<p>Redis 可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整</p>
+<h3 id="Redis为什么这么快"><a href="#Redis为什么这么快" class="headerlink" title="Redis为什么这么快"></a>Redis为什么这么快</h3><p>1）绝大部分请求是纯粹的内存操作（非常快速）<br>2）采用单线程,避免了不必要的线程切换开销<br>3）非阻塞IO </p>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/25/Redis用法和总结/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="cjbd29zk60008sh7zquxs9sd9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Redis-消息队列和异步处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/05/Redis-消息队列和异步处理/" class="article-date">
+  <time datetime="2016-12-05T15:39:37.000Z" itemprop="datePublished">2016-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/05/Redis-消息队列和异步处理/">Redis-消息队列和异步处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前公司有个app的项目，里面有即时聊天，需要一个存放聊天记录的接口</p>
+<p>每一条聊天记录都直接存放mysql，来一条insert一条，量不大还好说，基本都能应付。但是如果量特别大，一天几百万条，上千万条，这个insert操作就会执行几百万次，会不会响应不过来？用户体验会不会降低？</p>
+<p>类似的案例还有</p>
+<p>一个帖子，用户每访问一次就要<code>set visitor = visitor+1</code>，每天访问上百万次，就要update上百万次，，这个聊天记录表又是访问请求最高的，会不会锁死？</p>
+<p>其实这些都可以优化</p>
+<p>Redis读的速度是110000次/s,写的速度是81000次/s 。</p>
+<p>第一个案例里面可以用Redis做消息中转站，用一个list存放我们的聊天记录。</p>
+<p>利用Redis的性能，我们可以把这些请求都写到缓存。然后后台启用一个crontab定时任务，每分钟执行，把队列里的数据拿出来，存到MySQL，甚至可以每10秒，5秒做一次操作</p>
+<p>这里给大家一个简单的demo</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/12/05/Redis-消息队列和异步处理/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/12/05/Redis-消息队列和异步处理/" data-id="cjbd29zjl0001sh7z02l4y5cb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-PHP响应式装修公司官网" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/28/PHP响应式装修公司官网/" class="article-date">
@@ -98,7 +209,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2017/03/28/PHP响应式装修公司官网/" data-id="cjbd1icv800005n7z7z9qftvg" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2017/03/28/PHP响应式装修公司官网/" data-id="cjbd29zjr0003sh7zdq0am02g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP企业建站/">PHP企业建站</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/响应式装修公司官网/">响应式装修公司官网</a></li></ul>
@@ -148,62 +259,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/12/28/关于微信支付/" data-id="cjbd1icwk000j5n7zzjvyuw4n" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/12/28/关于微信支付/" data-id="cjbd29zl7000wsh7zymuf7l65" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信/">微信</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/支付/">支付</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redis-消息队列和异步处理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/05/Redis-消息队列和异步处理/" class="article-date">
-  <time datetime="2016-12-05T15:39:37.000Z" itemprop="datePublished">2016-12-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/05/Redis-消息队列和异步处理/">Redis-消息队列和异步处理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之前公司有个app的项目，里面有即时聊天，需要一个存放聊天记录的接口</p>
-<p>每一条聊天记录都直接存放mysql，来一条insert一条，量不大还好说，基本都能应付。但是如果量特别大，一天几百万条，上千万条，这个insert操作就会执行几百万次，会不会响应不过来？用户体验会不会降低？</p>
-<p>类似的案例还有</p>
-<p>一个帖子，用户每访问一次就要<code>set visitor = visitor+1</code>，每天访问上百万次，就要update上百万次，，这个聊天记录表又是访问请求最高的，会不会锁死？</p>
-<p>其实这些都可以优化</p>
-<p>Redis读的速度是110000次/s,写的速度是81000次/s 。</p>
-<p>第一个案例里面可以用Redis做消息中转站，用一个list存放我们的聊天记录。</p>
-<p>利用Redis的性能，我们可以把这些请求都写到缓存。然后后台启用一个crontab定时任务，每分钟执行，把队列里的数据拿出来，存到MySQL，甚至可以每10秒，5秒做一次操作</p>
-<p>这里给大家一个简单的demo</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/12/05/Redis-消息队列和异步处理/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/12/05/Redis-消息队列和异步处理/" data-id="cjbd1icvp00035n7zgbm40e4s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
 
     </footer>
   </div>
@@ -245,69 +304,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/12/05/html-table转excel/" data-id="cjbd1icvv00065n7zdym1grem" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/12/05/html-table转excel/" data-id="cjbd29zjv0004sh7zbosa331l" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html/">html</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redis用法和总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/25/Redis用法和总结/" class="article-date">
-  <time datetime="2016-11-24T16:19:01.000Z" itemprop="datePublished">2016-11-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/25/Redis用法和总结/">Redis用法和总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>MySQL：关系型数据库</p>
-<p>NoSQL：非关系型的数据库，数据之间无关系，无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式，有非常高的读写性能，尤其在大数据量下，表现非常优秀。</p>
-<ul>
-<li>键值(Key-Value)存储数据库(Redis)</li>
-<li>列存储数据库</li>
-<li>文档型数据库(MongoDb)</li>
-<li>图形(Graph)数据库</li>
-</ul>
-<p>Redis 就是一个 Key-Value 存储系统。支持的数据类型包括string(字符串)、hash(哈希)、list(链表)、set(集合)和zset(有序集合)等等。</p>
-<h4 id="Redis的性能"><a href="#Redis的性能" class="headerlink" title="Redis的性能"></a>Redis的性能</h4><p>官方的bench-mark数据：<br>测试完成了50个并发执行100000个请求。<br>设置和获取的值是一个256字节字符串。<br>结果:读的速度是110000次/s,写的速度是81000次/s 。</p>
-<h4 id="Redis的持久化"><a href="#Redis的持久化" class="headerlink" title="Redis的持久化"></a>Redis的持久化</h4><p>Redis运行在内存中但是可以持久化到磁盘</p>
-<p>Redis提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.</p>
-<p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照。当redis需要做持久化时，redis会fork一个子进程；子进程读出数据并将数据写到磁盘上一个临时RDB文件中；当子进程完成写临时文件后，将原来的RDB替换掉，这样的好处就是可以copy-on-write，缺点就是在redis异常死掉时， 最近的数据会丢失</p>
-<p>AOF redis每执行一个修改数据的命令，都会把它添加到aof文件中，当redis重启时，将会读取AOF文件进行“重放”以恢复到redis关闭前的最后时刻。</p>
-<p>Redis 可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整</p>
-<h3 id="Redis为什么这么快"><a href="#Redis为什么这么快" class="headerlink" title="Redis为什么这么快"></a>Redis为什么这么快</h3><p>1）绝大部分请求是纯粹的内存操作（非常快速）<br>2）采用单线程,避免了不必要的线程切换开销<br>3）非阻塞IO </p>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/25/Redis用法和总结/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/25/Redis用法和总结/" data-id="cjbd1icw4000b5n7zbqpcs6hw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
 
     </footer>
   </div>
@@ -349,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="cjbd1icvy00075n7zg0tfpkyg" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/17/mysql行级锁处理小规模并发实现抢购秒杀/" data-id="cjbd29zk90009sh7z7z56rb7f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
@@ -394,7 +394,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="cjbd1icwc000d5n7z880uc28m" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 关于支付宝手机网站支付/" data-id="cjbd29zl2000tsh7zit6uas96" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/支付/">支付</a></li></ul>
@@ -441,7 +441,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="cjbd1icwf000f5n7zak287cgp" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/15/php 递归函数的应用(三) 层级结构数据的树状输出/" data-id="cjbd29zkv000qsh7zh4cpl3ce" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -486,7 +486,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="cjbd1icwi000h5n7zct1ju0h0" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" data-id="cjbd29zlh0015sh7z3q2h59b8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
@@ -531,7 +531,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="cjbd1icw000085n7z9tu9kj81" class="article-share-link">Share</a>
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="cjbd29zkz000rsh7z17ph612d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>

@@ -87,7 +87,7 @@
     <link href="http://likangjun.com/2016/12/05/Redis-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%92%8C%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/"/>
     <id>http://likangjun.com/2016/12/05/Redis-消息队列和异步处理/</id>
     <published>2016-12-05T15:39:37.000Z</published>
-    <updated>2016-12-15T14:45:34.000Z</updated>
+    <updated>2017-12-19T03:19:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>之前公司有个app的项目，里面有即时聊天，需要一个存放聊天记录的接口</p>
 <p>每一条聊天记录都直接存放mysql，来一条insert一条，量不大还好说，基本都能应付。但是如果量特别大，一天几百万条，上千万条，这个insert操作就会执行几百万次，会不会响应不过来？用户体验会不会降低？</p>
@@ -163,7 +163,7 @@
     <link href="http://likangjun.com/2016/11/25/Redis%E7%94%A8%E6%B3%95%E5%92%8C%E6%80%BB%E7%BB%93/"/>
     <id>http://likangjun.com/2016/11/25/Redis用法和总结/</id>
     <published>2016-11-24T16:19:01.000Z</published>
-    <updated>2016-12-15T14:46:06.000Z</updated>
+    <updated>2017-12-19T03:19:09.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>MySQL：关系型数据库</p>
 <p>NoSQL：非关系型的数据库，数据之间无关系，无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式，有非常高的读写性能，尤其在大数据量下，表现非常优秀。</p>
