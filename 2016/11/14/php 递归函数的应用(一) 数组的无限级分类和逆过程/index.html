@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>PHP 递归函数的应用(一) 数组的无限级分类和逆过程 | Likangjun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-site-verification" content="06XSvFZPQvqk10xzDhYBgeDo01CUCCASMBEfjflgsc4">
+  <meta name="description" content="PHP 函数的递归应用(一) 数组的无限级分类和逆过程">
+<meta name="keywords" content="PHP, 递归">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 递归函数的应用(一) 数组的无限级分类和逆过程">
+<meta property="og:url" content="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/index.html">
+<meta property="og:site_name" content="Likangjun">
+<meta property="og:description" content="PHP 函数的递归应用(一) 数组的无限级分类和逆过程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2016-12-15T14:49:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP 递归函数的应用(一) 数组的无限级分类和逆过程">
+<meta name="twitter:description" content="PHP 函数的递归应用(一) 数组的无限级分类和逆过程">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Likangjun</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">Rss</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">Sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://likangjun.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-php 递归函数的应用(一) 数组的无限级分类和逆过程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" class="article-date">
+  <time datetime="2016-11-14T08:52:01.000Z" itemprop="datePublished">2016-11-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PHP 递归函数的应用(一) 数组的无限级分类和逆过程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>递归函数最基本的特点就是自身调用自身，在调用自身前有条件判断，否则会无限调用下去。在日常开发也会很常见，对逻辑性要求也较高，要想灵活的去运用，还需要多加尝试，利用递归，可以对数组进行无限极的分类，还可以对无限极分类的数组进行还原。</p>
+<h4 id="先看看无限极分类"><a href="#先看看无限极分类" class="headerlink" title="先看看无限极分类"></a>先看看无限极分类</h4><a id="more"></a>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">$data = <span class="keyword">array</span>(</span><br><span class="line">    <span class="number">0</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'1'</span>, <span class="string">'pid'</span> =&gt; <span class="number">0</span>, <span class="string">'name'</span> =&gt; <span class="string">'一级栏目一'</span>),</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'2'</span>, <span class="string">'pid'</span> =&gt; <span class="number">1</span>, <span class="string">'name'</span> =&gt; <span class="string">'二级栏目一'</span>),</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'3'</span>, <span class="string">'pid'</span> =&gt; <span class="number">1</span>, <span class="string">'name'</span> =&gt; <span class="string">'二级栏目二'</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'4'</span>, <span class="string">'pid'</span> =&gt; <span class="number">2</span>, <span class="string">'name'</span> =&gt; <span class="string">'三级栏目一'</span>),</span><br><span class="line">    <span class="number">4</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'5'</span>, <span class="string">'pid'</span> =&gt; <span class="number">2</span>, <span class="string">'name'</span> =&gt; <span class="string">'三级栏目二'</span>),</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'6'</span>, <span class="string">'pid'</span> =&gt; <span class="number">3</span>, <span class="string">'name'</span> =&gt; <span class="string">'三级栏目三'</span>),</span><br><span class="line">    <span class="number">6</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'7'</span>, <span class="string">'pid'</span> =&gt; <span class="number">3</span>, <span class="string">'name'</span> =&gt; <span class="string">'三级栏目四'</span>),</span><br><span class="line">    <span class="number">7</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'8'</span>, <span class="string">'pid'</span> =&gt; <span class="number">0</span>, <span class="string">'name'</span> =&gt; <span class="string">'一级栏目二'</span>),</span><br><span class="line">    <span class="number">8</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'9'</span>, <span class="string">'pid'</span> =&gt; <span class="number">8</span>, <span class="string">'name'</span> =&gt; <span class="string">'二级栏目三'</span>),</span><br><span class="line">    <span class="number">9</span> =&gt; <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="string">'10'</span>, <span class="string">'pid'</span> =&gt; <span class="number">7</span>, <span class="string">'name'</span> =&gt; <span class="string">'四级栏目一'</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//无限极分类</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assortArray</span><span class="params">($data, $pid = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $r = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">foreach</span> ($list <span class="keyword">as</span> $id =&gt; $item) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($item[<span class="string">'pid'</span>] == $pid) &#123;</span><br><span class="line">            $length = count($r);</span><br><span class="line">            $r[$length] = $item;</span><br><span class="line">            <span class="keyword">if</span> ($t = assortArray($list, $item[<span class="string">'id'</span>])) &#123;</span><br><span class="line">                $r[$length][<span class="string">'children'</span>] = $t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//还原</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrRecove</span><span class="params">($array)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> $r = [];</span><br><span class="line">    <span class="keyword">if</span> (is_array($array) &amp;&amp; count($array) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">foreach</span> ($array <span class="keyword">as</span> $k =&gt; $v) &#123;</span><br><span class="line">            $r[] = <span class="keyword">array</span>(</span><br><span class="line">                <span class="string">'id'</span> =&gt; $v[<span class="string">'id'</span>],</span><br><span class="line">                <span class="string">'pid'</span> =&gt; $v[<span class="string">'pid'</span>],</span><br><span class="line">                <span class="string">'name'</span> =&gt; $v[<span class="string">'name'</span>]</span><br><span class="line">            );</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">isset</span>($v[<span class="string">'children'</span>])) &#123;</span><br><span class="line">                arrRecove($v[<span class="string">'children'</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用以后输出，可以看到结果<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">array(2) &#123;</span></span><br><span class="line"><span class="xml">  [0]=&gt;</span></span><br><span class="line"><span class="xml">  array(4) &#123;</span></span><br><span class="line"><span class="xml">    ["id"]=&gt;</span></span><br><span class="line"><span class="xml">    string(1) "1"</span></span><br><span class="line"><span class="xml">    ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">    int(0)</span></span><br><span class="line"><span class="xml">    ["name"]=&gt;</span></span><br><span class="line"><span class="xml">    string(15) "一级栏目一"</span></span><br><span class="line"><span class="xml">    ["children"]=&gt;</span></span><br><span class="line"><span class="xml">    array(2) &#123;</span></span><br><span class="line"><span class="xml">      [0]=&gt;</span></span><br><span class="line"><span class="xml">      array(4) &#123;</span></span><br><span class="line"><span class="xml">        ["id"]=&gt;</span></span><br><span class="line"><span class="xml">        string(1) "2"</span></span><br><span class="line"><span class="xml">        ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">        int(1)</span></span><br><span class="line"><span class="xml">        ["name"]=&gt;</span></span><br><span class="line"><span class="xml">        string(15) "二级栏目一"</span></span><br><span class="line"><span class="xml">        ["children"]=&gt;</span></span><br><span class="line"><span class="xml">        array(2) &#123;</span></span><br><span class="line"><span class="xml">          [0]=&gt;</span></span><br><span class="line"><span class="xml">          array(3) &#123;</span></span><br><span class="line"><span class="xml">            ["id"]=&gt;</span></span><br><span class="line"><span class="xml">            string(1) "4"</span></span><br><span class="line"><span class="xml">            ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">            int(2)</span></span><br><span class="line"><span class="xml">            ["name"]=&gt;</span></span><br><span class="line"><span class="xml">            string(15) "三级栏目一"</span></span><br><span class="line"><span class="xml">          &#125;</span></span><br><span class="line"><span class="xml">          [1]=&gt;</span></span><br><span class="line"><span class="xml">          array(3) &#123;</span></span><br><span class="line"><span class="xml">            ["id"]=&gt;</span></span><br><span class="line"><span class="xml">            string(1) "5"</span></span><br><span class="line"><span class="xml">            ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">            int(2)</span></span><br><span class="line"><span class="xml">            ["name"]=&gt;</span></span><br><span class="line"><span class="xml">            string(15) "三级栏目二"</span></span><br><span class="line"><span class="xml">          &#125;</span></span><br><span class="line"><span class="xml">        &#125;</span></span><br><span class="line"><span class="xml">      &#125;</span></span><br><span class="line"><span class="xml">      [1]=&gt;</span></span><br><span class="line"><span class="xml">      array(4) &#123;</span></span><br><span class="line"><span class="xml">        ["id"]=&gt;</span></span><br><span class="line"><span class="xml">        string(1) "3"</span></span><br><span class="line"><span class="xml">        ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">        int(1)</span></span><br><span class="line"><span class="xml">        ["name"]=&gt;</span></span><br><span class="line"><span class="xml">        string(15) "二级栏目二"</span></span><br><span class="line"><span class="xml">        ["children"]=&gt;</span></span><br><span class="line"><span class="xml">        array(2) &#123;</span></span><br><span class="line"><span class="xml">          [0]=&gt;</span></span><br><span class="line"><span class="xml">          array(3) &#123;</span></span><br><span class="line"><span class="xml">            ["id"]=&gt;</span></span><br><span class="line"><span class="xml">            string(1) "6"</span></span><br><span class="line"><span class="xml">            ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">            int(3)</span></span><br><span class="line"><span class="xml">            ["name"]=&gt;</span></span><br><span class="line"><span class="xml">            string(15) "三级栏目三"</span></span><br><span class="line"><span class="xml">          &#125;</span></span><br><span class="line"><span class="xml">          [1]=&gt;</span></span><br><span class="line"><span class="xml">          array(4) &#123;</span></span><br><span class="line"><span class="xml">            ["id"]=&gt;</span></span><br><span class="line"><span class="xml">            string(1) "7"</span></span><br><span class="line"><span class="xml">            ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">            int(3)</span></span><br><span class="line"><span class="xml">            ["name"]=&gt;</span></span><br><span class="line"><span class="xml">            string(15) "三级栏目四"</span></span><br><span class="line"><span class="xml">            ["children"]=&gt;</span></span><br><span class="line"><span class="xml">            array(1) &#123;</span></span><br><span class="line"><span class="xml">              [0]=&gt;</span></span><br><span class="line"><span class="xml">              array(3) &#123;</span></span><br><span class="line"><span class="xml">                ["id"]=&gt;</span></span><br><span class="line"><span class="xml">                string(2) "10"</span></span><br><span class="line"><span class="xml">                ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">                int(7)</span></span><br><span class="line"><span class="xml">                ["name"]=&gt;</span></span><br><span class="line"><span class="xml">                string(15) "四级栏目一"</span></span><br><span class="line"><span class="xml">              &#125;</span></span><br><span class="line"><span class="xml">            &#125;</span></span><br><span class="line"><span class="xml">          &#125;</span></span><br><span class="line"><span class="xml">        &#125;</span></span><br><span class="line"><span class="xml">      &#125;</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">  [1]=&gt;</span></span><br><span class="line"><span class="xml">  array(4) &#123;</span></span><br><span class="line"><span class="xml">    ["id"]=&gt;</span></span><br><span class="line"><span class="xml">    string(1) "8"</span></span><br><span class="line"><span class="xml">    ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">    int(0)</span></span><br><span class="line"><span class="xml">    ["name"]=&gt;</span></span><br><span class="line"><span class="xml">    string(15) "一级栏目二"</span></span><br><span class="line"><span class="xml">    ["children"]=&gt;</span></span><br><span class="line"><span class="xml">    array(1) &#123;</span></span><br><span class="line"><span class="xml">      [0]=&gt;</span></span><br><span class="line"><span class="xml">      array(3) &#123;</span></span><br><span class="line"><span class="xml">        ["id"]=&gt;</span></span><br><span class="line"><span class="xml">        string(1) "9"</span></span><br><span class="line"><span class="xml">        ["pid"]=&gt;</span></span><br><span class="line"><span class="xml">        int(8)</span></span><br><span class="line"><span class="xml">        ["name"]=&gt;</span></span><br><span class="line"><span class="xml">        string(15) "二级栏目三"</span></span><br><span class="line"><span class="xml">      &#125;</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到最外层的数组只有我们的一级栏目，然后子栏目都嵌套在其中</p>
+<p>运行<code>arrRecove()</code>方法，即可把数组还原到二维数组</p>
+<p>甚至可以用一种更简单粗暴的分级<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//无限极分类</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assortArray</span><span class="params">($data, $pid = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $r = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">foreach</span> ($list <span class="keyword">as</span> $id =&gt; $item) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($item[<span class="string">'pid'</span>] == $pid) &#123;</span><br><span class="line">            <span class="keyword">if</span> ($t = assortArray($list, $item[<span class="string">'id'</span>])) &#123;</span><br><span class="line">                $r[$item[<span class="string">'name'</span>]] = $t;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $r[] = $item[<span class="string">'name'</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//还原</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrshift</span><span class="params">($array, $pid = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> $r = [];</span><br><span class="line">    <span class="keyword">static</span> $index = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (is_array($array) &amp;&amp; count($array) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">foreach</span> ($array <span class="keyword">as</span> $k =&gt; $v) &#123;</span><br><span class="line">            $r[] = <span class="keyword">array</span>(</span><br><span class="line">                <span class="string">'id'</span> =&gt; $index,</span><br><span class="line">                <span class="string">'pid'</span> =&gt; $pid,</span><br><span class="line">                <span class="string">'name'</span> =&gt; is_array($v) ? $k : $v</span><br><span class="line">            );</span><br><span class="line">            $index++;</span><br><span class="line">            arrshift($v, $index - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行分级方法可以看到<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">array(2) &#123;</span></span><br><span class="line"><span class="xml">  ["一级栏目一"]=&gt;</span></span><br><span class="line"><span class="xml">	  array(2) &#123;</span></span><br><span class="line"><span class="xml">	    ["二级栏目一"]=&gt;</span></span><br><span class="line"><span class="xml">	    array(2) &#123;</span></span><br><span class="line"><span class="xml">	      [0]=&gt;</span></span><br><span class="line"><span class="xml">	      string(15) "三级栏目一"</span></span><br><span class="line"><span class="xml">	      [1]=&gt;</span></span><br><span class="line"><span class="xml">	      string(15) "三级栏目二"</span></span><br><span class="line"><span class="xml">	    &#125;</span></span><br><span class="line"><span class="xml">	    ["二级栏目二"]=&gt;</span></span><br><span class="line"><span class="xml">	    array(2) &#123;</span></span><br><span class="line"><span class="xml">	      [0]=&gt;</span></span><br><span class="line"><span class="xml">	      string(15) "三级栏目三"</span></span><br><span class="line"><span class="xml">	      ["三级栏目四"]=&gt;</span></span><br><span class="line"><span class="xml">	      array(1) &#123;</span></span><br><span class="line"><span class="xml">	        [0]=&gt;</span></span><br><span class="line"><span class="xml">	        string(15) "四级栏目一"</span></span><br><span class="line"><span class="xml">	      &#125;</span></span><br><span class="line"><span class="xml">	    &#125;</span></span><br><span class="line"><span class="xml">	  &#125;</span></span><br><span class="line"><span class="xml">  ["一级栏目二"]=&gt;</span></span><br><span class="line"><span class="xml">	  array(1) &#123;</span></span><br><span class="line"><span class="xml">	    [0]=&gt;</span></span><br><span class="line"><span class="xml">	    string(15) "二级栏目三"</span></span><br><span class="line"><span class="xml">	  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>运行<code>arrRecove()</code>方法，同样可以把数组还原到二维数组</p>
+<p>不同的分级方式，还原的方法也就不一样</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/" data-id="clpwb4pc00008ud67jia76ec7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/14/php 递归函数的应用(二) 文件夹目录遍历/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PHP 递归函数的应用(二) 文件夹目录遍历
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/11/php中的路径研究 以及 .: ..:  __DIR__ __FILE__ getcwd() 的用法和区别/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">php中的路径研究和./ ../  __DIR__ __FILE__ getcwd() 的用法和区别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <section id="comments">
+        <!-- 多说评论框 start -->
+        <div class="ds-thread" data-thread-key="post-php 递归函数的应用(一) 数组的无限级分类和逆过程" data-title="PHP 递归函数的应用(一) 数组的无限级分类和逆过程" data-url="http://likangjun.com/2016/11/14/php 递归函数的应用(一) 数组的无限级分类和逆过程/"></div>
+        <!-- 多说评论框 end -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <script type="text/javascript">
+            var duoshuoQuery = {short_name:'likangjun'};
+            (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+        </script>
+        <!-- 多说公共JS代码 end -->
+    </section>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PHP企业建站/" style="font-size: 10px;">PHP企业建站</a> <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/响应式装修公司官网/" style="font-size: 10px;">响应式装修公司官网</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/并发/" style="font-size: 13.33px;">并发</a> <a href="/tags/微信/" style="font-size: 13.33px;">微信</a> <a href="/tags/支付/" style="font-size: 13.33px;">支付</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 16.67px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/28/PHP响应式装修公司官网/">PHP企业建站/响应式装修公司官网</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/28/关于微信支付/">关于微信支付</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/05/Redis-消息队列和异步处理/">Redis-消息队列和异步处理</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/05/html-table转excel/">html table转excel</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/25/Redis用法和总结/">Redis用法和总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Likangjun<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      
+      <!-- Analytics -->
+      <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260672741' style='margin-left: 10px'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1260672741%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+      <!-- End Analytics -->
+      
+      <br>
+	  <a href="https://beian.miit.gov.cn" target="_blank">鄂ICP备15018056号-1</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">Rss</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">Sitemap</a>
+  
+</nav>
+    
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

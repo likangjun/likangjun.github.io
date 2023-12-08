@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>php+ajax 简易即时聊天室 | Likangjun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-site-verification" content="06XSvFZPQvqk10xzDhYBgeDo01CUCCASMBEfjflgsc4">
+  <meta name="description" content="php+ajax 简易即时聊天室">
+<meta name="keywords" content="ajax, php, 即时聊天">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php+ajax 简易即时聊天室">
+<meta property="og:url" content="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/index.html">
+<meta property="og:site_name" content="Likangjun">
+<meta property="og:description" content="php+ajax 简易即时聊天室">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-19T02:45:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="php+ajax 简易即时聊天室">
+<meta name="twitter:description" content="php+ajax 简易即时聊天室">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Likangjun</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">Rss</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">Sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://likangjun.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-php-ajax-简易即时聊天室" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/26/php-ajax-简易即时聊天室/" class="article-date">
+  <time datetime="2016-10-26T11:53:58.000Z" itemprop="datePublished">2016-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      php+ajax 简易即时聊天室
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>github的地址是：<a href="https://github.com/likangjun/chat" target="_blank" rel="noopener">https://github.com/likangjun/chat</a><br>demo: <a href="http://demo.likangjun.com/chat" target="_blank" rel="noopener">http://demo.likangjun.com/chat</a></p>
+<p>这里是用<code>MySQL</code>和<code>txt</code>文件来保存的聊天记录，然后用js去不断的请求聊天内容展现到页面上而达到了即时的效果，这里也可以用<code>redis</code>这种<code>nosql</code>。之前还在网上看到过一个<code>PHP+Swoole</code>扩展的即时聊天项目，地址是<a href="https://github.com/matyhtf/php-webim" target="_blank" rel="noopener">https://github.com/matyhtf/php-webim</a> ，也值得去学习学习</p>
+<p>先看下文件结构<br><figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">chat</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ ajax.php</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ chat.php</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ conn.inc</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ css</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    ├─ main.css</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    └─ style.css</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ get.php</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ image</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    ├─ bg.jpg</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    ├─ close.png</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    ├─ logo.jpg</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    └─ user.jpg</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ index.php</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ jquery-1.6.min.js</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ log</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    │    └─ 20161026.txt</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ login.php</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    ├─ logout.php</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    └─ README.md</span></span><br></pre></td></tr></table></figure></p>
+<p><code>log</code>是聊天记录存放目录</p>
+<p><code>conn</code>是用来链接数据库的</p>
+<p><code>index</code>，<code>login</code>，<code>logout</code>是登录，退出这些页面</p>
+<p><code>ajax</code>是用于接受信息并储存在数据库或文件</p>
+<p>最主要的还是<code>chat.php</code> 和<code>get.php</code></p>
+<p><code>chat</code>是聊天室页面，用<code>ajax</code>不断的请求<code>get.php</code>获得聊天内容并展示<br><code>get.php</code>里把第一次请求时的聊天条数和第一次以后的聊天条数作对比，然后用死循环去不断查询数据库或者读本地文件获取聊天信息返回给<code>chat.php</code>，从而形成了即时聊天</p>
+<p>这个只是一个简单粗暴的方法，性能和体验上还达不到要求，后续也将会去学习研究更好的解决方案</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/" data-id="clpwb4pca000jud67l8tvmxfc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/即时聊天/">即时聊天</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/27/php合成图片加水印/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          php合成图片加水印
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/14/Hexo开启多说评论/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo开启多说评论</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <section id="comments">
+        <!-- 多说评论框 start -->
+        <div class="ds-thread" data-thread-key="post-php-ajax-简易即时聊天室" data-title="php+ajax 简易即时聊天室" data-url="http://likangjun.com/2016/10/26/php-ajax-简易即时聊天室/"></div>
+        <!-- 多说评论框 end -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <script type="text/javascript">
+            var duoshuoQuery = {short_name:'likangjun'};
+            (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+        </script>
+        <!-- 多说公共JS代码 end -->
+    </section>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PHP企业建站/" style="font-size: 10px;">PHP企业建站</a> <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/即时聊天/" style="font-size: 10px;">即时聊天</a> <a href="/tags/响应式装修公司官网/" style="font-size: 10px;">响应式装修公司官网</a> <a href="/tags/图片合成/" style="font-size: 10px;">图片合成</a> <a href="/tags/并发/" style="font-size: 13.33px;">并发</a> <a href="/tags/微信/" style="font-size: 13.33px;">微信</a> <a href="/tags/支付/" style="font-size: 13.33px;">支付</a> <a href="/tags/水印/" style="font-size: 10px;">水印</a> <a href="/tags/递归/" style="font-size: 16.67px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/28/PHP响应式装修公司官网/">PHP企业建站/响应式装修公司官网</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/28/关于微信支付/">关于微信支付</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/05/Redis-消息队列和异步处理/">Redis-消息队列和异步处理</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/05/html-table转excel/">html table转excel</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/25/Redis用法和总结/">Redis用法和总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Likangjun<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      
+      <!-- Analytics -->
+      <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260672741' style='margin-left: 10px'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1260672741%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+      <!-- End Analytics -->
+      
+      <br>
+	  <a href="https://beian.miit.gov.cn" target="_blank">鄂ICP备15018056号-1</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">Rss</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">Sitemap</a>
+  
+</nav>
+    
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
